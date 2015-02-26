@@ -5,9 +5,12 @@
  */
 package edu.brown.csci2951k.models.data;
 
+import edu.brown.csci2951k.models.language.ObjectLanguageModel;
 import edu.brown.csci2951k.util.xml.XMLCollectionSerializable;
 import edu.brown.csci2951k.util.xml.XMLElement;
+import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLSerializable;
+import edu.brown.csci2951k.util.xml.XMLTypeAdapter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -149,6 +152,11 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
     @Override
     public XMLElement toXML(String xmlObjectName) {
         return new XMLCollectionSerializable(xmlObjectName, this.mset);
+    }
+    
+    public static <L extends ObjectLanguageModel> MObjectSet fromXML(XMLObject parseXML, XMLTypeAdapter<L> langModAdapter) {
+        XMLAdapterMObjectImpl adapter = new XMLAdapterMObjectImpl<>(langModAdapter);
+        return new MObjectSet(parseXML.getCollectionValue(HashSet::new, adapter));
     }
 
 }

@@ -22,7 +22,7 @@ public class XMLObject extends XMLElement {
         super(tag);
         elt = new LinkedList<>();
     }
-    
+
     public XMLObject(String tag, List<Pair<String, String>> attr, List<XMLElement> children) {
         super(tag, attr);
         elt = children;
@@ -55,8 +55,8 @@ public class XMLObject extends XMLElement {
         }
         throw new IndexOutOfBoundsException("Can't find the " + index + " instance of " + tag);
     }
-    
-    public int size(String tag){
+
+    public int size(String tag) {
         Iterator<XMLElement> itr = elt.iterator();
         int rv = 0;
         while (itr.hasNext()) {
@@ -67,7 +67,7 @@ public class XMLObject extends XMLElement {
         }
         return rv;
     }
-    
+
     public int size() {
         return elt.size();
     }
@@ -75,7 +75,7 @@ public class XMLObject extends XMLElement {
     public XMLElement get(String tag) {
         return this.get(tag, 0);
     }
-    
+
     public XMLElement get(int idx) {
         return elt.get(idx);
     }
@@ -95,7 +95,7 @@ public class XMLObject extends XMLElement {
     @Override
     @Deprecated
     public XMLObject toXMLObject() {
-        return super.toXMLObject();
+        throw new UnsupportedOperationException();
     }
 
     @Override
