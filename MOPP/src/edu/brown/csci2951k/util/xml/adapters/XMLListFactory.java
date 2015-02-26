@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.brown.cs.cs032.util.xml.adapters;
+package edu.brown.csci2951k.util.xml.adapters;
 
-import edu.brown.cs.cs032.util.xml.XMLCollectionFactory;
+import edu.brown.csci2951k.util.xml.XMLCollectionFactory;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

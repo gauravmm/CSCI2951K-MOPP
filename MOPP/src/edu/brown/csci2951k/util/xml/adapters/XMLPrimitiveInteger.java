@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.brown.cs.cs032.util.xml.adapters;
+package edu.brown.csci2951k.util.xml.adapters;
 
 import edu.brown.csci2951k.util.xml.XMLPrimitiveTypeAdapter;
-import edu.brown.cs.cs032.util.xml.XMLSerializingException;
+import edu.brown.csci2951k.util.xml.XMLSerializingException;
+
 
 /**
  * Double wrapper for XMLPrimitive. Singleton class.

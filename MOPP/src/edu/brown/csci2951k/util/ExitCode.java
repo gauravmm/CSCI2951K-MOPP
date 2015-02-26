@@ -45,4 +45,8 @@ public enum ExitCode {
     public String getHelpText() {
         return helpText;
     }
+    
+    public void exitWith() {
+        System.exit(code);
+    }
 }

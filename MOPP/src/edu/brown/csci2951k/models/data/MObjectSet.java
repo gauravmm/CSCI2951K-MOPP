@@ -5,9 +5,9 @@
  */
 package edu.brown.csci2951k.models.data;
 
+import edu.brown.csci2951k.util.xml.XMLCollectionSerializable;
 import edu.brown.csci2951k.util.xml.XMLElement;
 import edu.brown.csci2951k.util.xml.XMLSerializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -134,11 +134,6 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
         throw new UnsupportedOperationException("Read-only set.");
     }
 
-    @Override
-    public XMLElement toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public boolean verify(Collection<MObject> collect) {
         List<MObject> m = new LinkedList<>(collect);
 
@@ -149,6 +144,11 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
         }
 
         return m.isEmpty();
+    }
+
+    @Override
+    public XMLElement toXML(String xmlObjectName) {
+        return new XMLCollectionSerializable(xmlObjectName, this.mset);
     }
 
 }

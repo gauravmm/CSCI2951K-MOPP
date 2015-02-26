@@ -11,9 +11,7 @@ package edu.brown.csci2951k.util.xml;
  * @author Gaurav Manek
  */
 public interface XMLTypeAdapter<T> {
-
-    public XMLElement toXML(T input);
-    
+   
     public XMLElement toXML(String name, T input);
 
     public T fromXML(XMLElement input);

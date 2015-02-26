@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package edu.brown.cs.cs032.util.xml;
+package edu.brown.csci2951k.util.xml;
 
 /**
  *

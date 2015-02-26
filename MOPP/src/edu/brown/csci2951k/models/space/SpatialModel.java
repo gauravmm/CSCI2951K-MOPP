@@ -9,7 +9,9 @@ import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.data.MObjectSet;
 import edu.brown.csci2951k.util.Pair;
 import edu.brown.csci2951k.util.xml.XMLElement;
+import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLSerializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -42,11 +44,6 @@ public class SpatialModel<T extends SpatialCoords> implements XMLSerializable {
             throw new IllegalArgumentException("Coordinate set does not match objects.");
     }
     
-    @Override
-    public XMLElement toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     public Stream<Pair<MObject, T>> stream() {
         return locationMap.entrySet().stream().map((e) -> new Pair<>(e.getKey(), e.getValue()));
     }
@@ -75,8 +72,22 @@ public class SpatialModel<T extends SpatialCoords> implements XMLSerializable {
         return listeners.add(e);
     }
 
-    public boolean removeListener(Object o) {
+    public boolean removeListener(SpatialChangeListener o) {
         return listeners.remove(o);
+    }
+
+    @Override
+    public XMLElement toXML(String xmlObjectName) {
+        XMLObject rv = new XMLObject(xmlObjectName);
+        
+        Iterator<Pair<String, XMLElement>> itr = locationMap.entrySet().stream().map((e) -> new Pair<>(e.getKey().getId(), e.getValue().toXML("coords"))).iterator();
+        
+        while(itr.hasNext()) {
+            Pair<String, XMLElement> elt = itr.next();
+            rv.add(new XMLObject("element", Arrays.asList(new Pair<>("id", elt.getKey())), Arrays.asList(elt.getValue())));
+        }
+        
+        return rv;
     }
     
 }
