@@ -35,7 +35,7 @@ public class XMLAdapterMObjectImpl<L extends ObjectLanguageModel> implements XML
         XMLObject o = input.toXMLObject();
         
         String id = o.get("id").getPrimitiveValue(XMLPrimitiveString.getInstance());
-        L lM = langModAdapter.fromXML(Optional.of(o.get("language_model")).get());
+        L lM = langModAdapter.fromXML(o.get("language_model"));
         return new MObjectImpl(id, lM);
     }
     

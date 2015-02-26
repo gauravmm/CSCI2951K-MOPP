@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public final class XMLParser {
 
-    private static final Pattern tag = Pattern.compile("<(/?)([a-zA-Z0-9]*)(\\b[^>]*)?>");
+    private static final Pattern tag = Pattern.compile("<(/?)([a-zA-Z0-9_:]*)(\\b[^>]*)?>");
     private static final int TAG_GROUP_ALL = 0;
     private static final int TAG_GROUP_SLASH = 1;
     private static final int TAG_GROUP_NAME = 2;

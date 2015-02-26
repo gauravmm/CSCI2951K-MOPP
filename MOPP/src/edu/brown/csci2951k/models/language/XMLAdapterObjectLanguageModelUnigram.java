@@ -14,13 +14,10 @@ import edu.brown.csci2951k.util.xml.XMLTypeAdapter;
 import edu.brown.csci2951k.util.xml.adapters.XMLPrimitiveString;
 import edu.brown.csci2951k.util.xml.adapters.XMLString;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
 
 /**
  *
  * @author Gaurav Manek
- * @param <L> The ObjectLanguageModel type
  */
 public class XMLAdapterObjectLanguageModelUnigram implements XMLTypeAdapter<ObjectLanguageModelUnigram> {
 

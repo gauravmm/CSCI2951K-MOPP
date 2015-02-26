@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -40,6 +41,10 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
         if (mset.size() != this.mset.size()) {
             throw new IllegalArgumentException("MObjectSet cannot include duplicate objects.");
         }
+    }
+    
+    public Optional<MObject> get(String id) {
+        return mset.stream().filter(e -> id.equals(e.getId())).findAny();
     }
 
     @Override
@@ -154,9 +159,8 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
         return new XMLCollectionSerializable(xmlObjectName, this.mset);
     }
     
-    public static <L extends ObjectLanguageModel> MObjectSet fromXML(XMLObject parseXML, XMLTypeAdapter<L> langModAdapter) {
+    public static <L extends ObjectLanguageModel> MObjectSet fromXML(XMLElement parseXML, XMLTypeAdapter<L> langModAdapter) {
         XMLAdapterMObjectImpl adapter = new XMLAdapterMObjectImpl<>(langModAdapter);
         return new MObjectSet(parseXML.getCollectionValue(HashSet::new, adapter));
     }
-
 }
