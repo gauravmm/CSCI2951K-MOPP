@@ -10,6 +10,7 @@ import edu.brown.csci2951k.util.xml.XMLElement;
 import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLPrimitive;
 import edu.brown.csci2951k.util.xml.adapters.XMLPrimitiveString;
+import java.util.Objects;
 
 /**
  *
@@ -41,6 +42,28 @@ public class MObjectImpl implements MObject {
         rv.add(new XMLPrimitive("id", XMLPrimitiveString.getInstance(), id));
         rv.add(langMod.toXML("language_model"));
         return rv;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MObjectImpl other = (MObjectImpl) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }
