@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Gaurav Manek
  */
-public class XMLCollection<T> extends XMLElement {
+public class XMLCollection extends XMLElement {
 
     protected List<XMLElement> contents;
 
@@ -37,13 +37,10 @@ public class XMLCollection<T> extends XMLElement {
         this.contents = contents;
     }
 
-    public XMLCollection(String tag, XMLTypeAdapter<T> adapter, Collection<T> data) {
+    public <T> XMLCollection(String tag, XMLTypeAdapter<T> adapter, Collection<T> data) {
         super(tag);
-
         this.contents = new LinkedList<>();
-        for (T elt : data) {
-            contents.add(adapter.toXML(elt));
-        }
+        data.stream().forEach((elt) -> contents.add(adapter.toXML("element", elt)));
     }
 
     public <T> Collection<T> get(XMLCollectionFactory<T> factory, XMLTypeAdapter<T> adapter) {
@@ -57,19 +54,19 @@ public class XMLCollection<T> extends XMLElement {
     @Override
     @Deprecated
     public XMLCollection toXMLCollection() {
-        return super.toXMLCollection(); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public XMLPrimitive toXMLPrimitive() {
-        return super.toXMLPrimitive(); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public XMLObject toXMLObject() {
-        return super.toXMLObject(); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException();
     }
 
     @Override

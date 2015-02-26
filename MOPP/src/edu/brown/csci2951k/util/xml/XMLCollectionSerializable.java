@@ -13,14 +13,21 @@ import java.util.LinkedList;
  *
  * @author Gaurav Manek
  */
-public final class XMLCollectionSerializable<T extends XMLSerializable> extends XMLCollection<T> {
+public final class XMLCollectionSerializable extends XMLCollection {
 
-    public XMLCollectionSerializable(String tag, Collection<T> data) {
+    /**
+     * Convert a collection of serializable 
+     * 
+     * @param <T> The XMLSerializable type that the collection contains.
+     * @param tag The value of the tag
+     * @param data The collection to convert to the an XMLCollection
+     */
+    public <T extends XMLSerializable> XMLCollectionSerializable(String tag, Collection<T> data) {
         super(tag);
 
         this.contents = new LinkedList<>();
         for (T elt : data) {
-            contents.add(elt.toXML());
+            contents.add(elt.toXML("element"));
         }
     }
 

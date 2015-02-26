@@ -5,15 +5,19 @@
  */
 package edu.brown.csci2951k.models.data;
 
+import edu.brown.csci2951k.models.language.ObjectLanguageModel;
+import edu.brown.csci2951k.util.xml.XMLCollectionSerializable;
 import edu.brown.csci2951k.util.xml.XMLElement;
+import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLSerializable;
-import java.util.ArrayList;
+import edu.brown.csci2951k.util.xml.XMLTypeAdapter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -37,6 +41,10 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
         if (mset.size() != this.mset.size()) {
             throw new IllegalArgumentException("MObjectSet cannot include duplicate objects.");
         }
+    }
+    
+    public Optional<MObject> get(String id) {
+        return mset.stream().filter(e -> id.equals(e.getId())).findAny();
     }
 
     @Override
@@ -134,11 +142,6 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
         throw new UnsupportedOperationException("Read-only set.");
     }
 
-    @Override
-    public XMLElement toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public boolean verify(Collection<MObject> collect) {
         List<MObject> m = new LinkedList<>(collect);
 
@@ -151,4 +154,13 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
         return m.isEmpty();
     }
 
+    @Override
+    public XMLElement toXML(String xmlObjectName) {
+        return new XMLCollectionSerializable(xmlObjectName, this.mset);
+    }
+    
+    public static <L extends ObjectLanguageModel> MObjectSet fromXML(XMLElement parseXML, XMLTypeAdapter<L> langModAdapter) {
+        XMLAdapterMObjectImpl adapter = new XMLAdapterMObjectImpl<>(langModAdapter);
+        return new MObjectSet(parseXML.getCollectionValue(HashSet::new, adapter));
+    }
 }

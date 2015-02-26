@@ -4,7 +4,7 @@
  * Gaurav Manek
  */
 
-package edu.brown.cs.cs032.util.clargs;
+package edu.brown.csci2951k.util.clargs;
 
 /**
  * Exception thrown when command line arguments are incorrectly structured.

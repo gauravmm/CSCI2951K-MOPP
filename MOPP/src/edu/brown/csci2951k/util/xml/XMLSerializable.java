@@ -12,12 +12,14 @@ package edu.brown.csci2951k.util.xml;
 public interface XMLSerializable {
 
     /**
-     * Create an XMLElement that represents the contents of this object, with a
-     * default name.
+     * Create an XMLElement that represents the contents of this object, with an
+     * assigned name.
      *
+     * @param xmlObjectName The name to assign the root XMLElement of this
+     * object.
      * @return An XMLElement instance that contains enough information to
      * reconstruct this object.
      */
-    public XMLElement toXML();
+    public XMLElement toXML(String xmlObjectName);
 
 }

@@ -22,8 +22,8 @@ public class XMLObject extends XMLElement {
         super(tag);
         elt = new LinkedList<>();
     }
-    
-    XMLObject(String tag, List<Pair<String, String>> attr, List<XMLElement> children) {
+
+    public XMLObject(String tag, List<Pair<String, String>> attr, List<XMLElement> children) {
         super(tag, attr);
         elt = children;
     }
@@ -34,7 +34,7 @@ public class XMLObject extends XMLElement {
     }
 
     public void add(XMLSerializable e) {
-        elt.add(e.toXML());
+        elt.add(e.toXML("element"));
     }
 
     public void add(XMLElement e) {
@@ -55,8 +55,8 @@ public class XMLObject extends XMLElement {
         }
         throw new IndexOutOfBoundsException("Can't find the " + index + " instance of " + tag);
     }
-    
-    public int size(String tag){
+
+    public int size(String tag) {
         Iterator<XMLElement> itr = elt.iterator();
         int rv = 0;
         while (itr.hasNext()) {
@@ -67,7 +67,7 @@ public class XMLObject extends XMLElement {
         }
         return rv;
     }
-    
+
     public int size() {
         return elt.size();
     }
@@ -75,27 +75,27 @@ public class XMLObject extends XMLElement {
     public XMLElement get(String tag) {
         return this.get(tag, 0);
     }
-    
+
     public XMLElement get(int idx) {
         return elt.get(idx);
     }
 
     @Override
     @Deprecated
-    public XMLCollection<?> toXMLCollection() {
-        return super.toXMLCollection(); //To change body of generated methods, choose Tools | Templates.
+    public XMLCollection toXMLCollection() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public XMLPrimitive toXMLPrimitive() {
-        return super.toXMLPrimitive(); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public XMLObject toXMLObject() {
-        return super.toXMLObject(); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException();
     }
 
     @Override

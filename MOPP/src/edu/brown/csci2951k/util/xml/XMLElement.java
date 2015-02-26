@@ -33,7 +33,7 @@ public abstract class XMLElement {
         attr = new LinkedList<>();
     }
     
-    protected XMLElement(String tag, List<Pair<String, String>> attr){
+    protected XMLElement(String tag, Collection<Pair<String, String>> attr){
         this.tag = tag;
         this.attr = new LinkedList<>(attr);
     }
@@ -82,9 +82,9 @@ public abstract class XMLElement {
         }
     }
 
-    public XMLCollection<?> toXMLCollection() {
+    public XMLCollection toXMLCollection() {
         try {
-            return (XMLCollection<?>) this;
+            return (XMLCollection) this;
         } catch (ClassCastException e) {
             throw new XMLSerializingException(e);
         }

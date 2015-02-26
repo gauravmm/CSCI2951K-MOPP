@@ -38,7 +38,7 @@ public class XMLPrimitive extends XMLElement {
     @Override
     @Deprecated
     public XMLCollection toXMLCollection() {
-        return super.toXMLCollection(); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class XMLPrimitive extends XMLElement {
     @Override
     @Deprecated
     public XMLObject toXMLObject() {
-        return super.toXMLObject(); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException();
     }
 
     @Override
