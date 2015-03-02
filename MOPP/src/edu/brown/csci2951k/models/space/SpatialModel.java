@@ -38,7 +38,7 @@ public class SpatialModel<T extends SpatialCoords> implements XMLSerializable {
         objects.forEach((o) -> locationMap.put(o, fn.apply(o)));
     }
 
-    protected SpatialModel(MObjectSet objects, Collection<Pair<MObject, T>> coords) {
+    public SpatialModel(MObjectSet objects, Collection<Pair<MObject, T>> coords) {
         this.objects = objects;
 
         // Verify that coords has everything in objects and nothing else;

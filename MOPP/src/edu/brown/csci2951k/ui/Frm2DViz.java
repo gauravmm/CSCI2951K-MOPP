@@ -5,9 +5,13 @@
  */
 package edu.brown.csci2951k.ui;
 
+import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.data.MObjectSet;
 import edu.brown.csci2951k.models.space.Coords2D;
 import edu.brown.csci2951k.models.space.SpatialModel;
+import edu.brown.csci2951k.util.Pair;
+import java.util.DoubleSummaryStatistics;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -20,10 +24,21 @@ public class Frm2DViz extends javax.swing.JFrame {
      * Creates new form Frm2DViz
      */
     public Frm2DViz(SpatialModel<Coords2D> spModel) {
-        initComponents();
         this.spModel = spModel;
+        initComponents();
     }
 
+    public void onUpdatedMovement(MObject m){
+        //When informed that an object is moved, labels must be re-written and objects must be redrawn
+        DoubleSummaryStatistics xstats = spModel.stream().map(Pair<MObject, Coords2D>::getValue).collect(Collectors.summarizingDouble(Coords2D::getX));
+        DoubleSummaryStatistics ystats = spModel.stream().map(Pair<MObject, Coords2D>::getValue).collect(Collectors.summarizingDouble(Coords2D::getY));
+        ((Pnl2DVizXAxisLabel) xAxis).setMax(xstats.getMax());
+        ((Pnl2DVizXAxisLabel) xAxis).setMin(xstats.getMin());
+        ((Pnl2DVizYAxisLabel) yAxis).setMax(ystats.getMax());
+        ((Pnl2DVizYAxisLabel) yAxis).setMin(ystats.getMin());
+        mainPanel.repaint();
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,23 +48,94 @@ public class Frm2DViz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
+        mainPanel = new Pnl2DViz(spModel);
+        DoubleSummaryStatistics ystats = spModel.stream().map(Pair<MObject, Coords2D>::getValue).collect(Collectors.summarizingDouble(Coords2D::getY));
+        yAxis = new Pnl2DVizYAxisLabel(ystats.getMin(), ystats.getMax(), 10);
+        DoubleSummaryStatistics xstats = spModel.stream().map(Pair<MObject, Coords2D>::getValue).collect(Collectors.summarizingDouble(Coords2D::getX));
+        xAxis = new Pnl2DVizXAxisLabel(xstats.getMin(), xstats.getMax(), 10);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("2D Spatial Model Visualizer");
+
+        mainPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        yAxis.setBackground(new java.awt.Color(200, 200, 200));
+
+        javax.swing.GroupLayout yAxisLayout = new javax.swing.GroupLayout(yAxis);
+        yAxis.setLayout(yAxisLayout);
+        yAxisLayout.setHorizontalGroup(
+            yAxisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 34, Short.MAX_VALUE)
+        );
+        yAxisLayout.setVerticalGroup(
+            yAxisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 329, Short.MAX_VALUE)
+        );
+
+        xAxis.setBackground(new java.awt.Color(200, 200, 200));
+
+        javax.swing.GroupLayout xAxisLayout = new javax.swing.GroupLayout(xAxis);
+        xAxis.setLayout(xAxisLayout);
+        xAxisLayout.setHorizontalGroup(
+            xAxisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 454, Short.MAX_VALUE)
+        );
+        xAxisLayout.setVerticalGroup(
+            xAxisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 33, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(yAxis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(xAxis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(yAxis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(xAxis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JPanel xAxis;
+    private javax.swing.JPanel yAxis;
     // End of variables declaration//GEN-END:variables
 }

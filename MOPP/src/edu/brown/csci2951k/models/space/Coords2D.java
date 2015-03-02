@@ -42,6 +42,13 @@ public class Coords2D implements SpatialCoords {
 
         throw new IllegalArgumentException("dim out of bounds");
     }
+    
+    public double getX(){
+        return get(0);
+    }
+    public double getY(){
+        return get(1);
+    }
 
     @Override
     public XMLElement toXML(String xmlObjectName) {
