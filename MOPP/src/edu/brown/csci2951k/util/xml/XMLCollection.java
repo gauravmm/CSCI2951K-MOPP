@@ -22,11 +22,6 @@ public class XMLCollection extends XMLElement {
         super(tag);
     }
 
-    public XMLCollection(List<XMLElement> contents, String tag) {
-        super(tag);
-        this.contents = contents;
-    }
-
     XMLCollection(String tag, List<Pair<String, String>> attr, List<XMLElement> contents) {
         super(tag, attr);
         this.contents = contents;
