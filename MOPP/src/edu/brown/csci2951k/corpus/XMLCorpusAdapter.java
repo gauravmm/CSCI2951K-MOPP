@@ -42,13 +42,13 @@ public class XMLCorpusAdapter<C extends SpatialCoords, L extends ObjectLanguageM
     }
 
     @Override
-    public Corpus fromXML(XMLElement input) {
+    public Corpus<C> fromXML(XMLElement input) {
         XMLObject o = input.toXMLObject();
         MObjectSet obj = MObjectSet.fromXML(o.get("objects"), this.langModAdapter);
         SpatialModel<C> sM = SpatialModel.fromXML(o.get("model"), coordAdapter, obj);
         Collection<Pair<String, MObject>> corpus = o.get("corpus").getCollectionValue(ArrayList::new, new XMLPrimitivePair<>(XMLPrimitiveString.getInstance(), new XMLPrimitiveMObjectReference(obj)));
 
-        return new Corpus(obj, sM, corpus);
+        return new Corpus<>(obj, sM, corpus);
     }
 
 }

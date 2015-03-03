@@ -5,6 +5,8 @@
  */
 package edu.brown.csci2951k.util.xml;
 
+import edu.brown.csci2951k.corpus.Corpus;
+import edu.brown.csci2951k.corpus.XMLCorpusAdapter;
 import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.data.MObjectImpl;
 import edu.brown.csci2951k.models.data.MObjectSet;
@@ -14,8 +16,10 @@ import edu.brown.csci2951k.models.language.XMLAdapterObjectLanguageModelUnigram;
 import edu.brown.csci2951k.models.space.Coords2D;
 import edu.brown.csci2951k.models.space.SpatialModel;
 import edu.brown.csci2951k.models.space.XMLAdapterCoords2D;
+import edu.brown.csci2951k.util.Pair;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import junit.framework.Assert;
 import org.junit.After;
@@ -56,68 +60,76 @@ public class XMLSerializationTest {
         SpatialModel<Coords2D> model = new SpatialModel<>(set, (m) -> new Coords2D(Math.random(), Math.random()));
         model.addListener((s) -> System.err.println(s.getId()));
 
-        System.out.println(set.toXML("objects"));
-        System.out.println(model.toXML("model"));
+        //System.out.println(set.toXML("objects"));
+        //System.out.println(model.toXML("model"));
+        List<Pair<String, MObject>> asList = Arrays.asList(new Pair<>("This is a test", set.get("red_spoon").get()));
+        Corpus<Coords2D> corpus = new Corpus<>(set, model, asList);
+        System.out.println(corpus.toXML("corpus"));
     }
 
     @Test
     public void fromAndToXML() {
-        String in = "<object_test>\n"
-                + "	<element>\n"
-                + "		<id>red_spoon</id>\n"
-                + "		<language_model>\n"
-                + "			<element>red</element>\n"
-                + "			<element>spoon</element>\n"
-                + "		</language_model>\n"
-                + "	</element>\n"
-                + "	<element>\n"
-                + "		<id>pink_bowl</id>\n"
-                + "		<language_model>\n"
-                + "			<element>pink</element>\n"
-                + "			<element>bowl</element>\n"
-                + "		</language_model>\n"
-                + "	</element>\n"
-                + "	<element>\n"
-                + "		<id>blue_bowl</id>\n"
-                + "		<language_model>\n"
-                + "			<element>blue</element>\n"
-                + "			<element>bowl</element>\n"
-                + "		</language_model>\n"
-                + "	</element>\n"
-                + "	<element>\n"
-                + "		<id>blue_spoon</id>\n"
-                + "		<language_model>\n"
-                + "			<element>blue</element>\n"
-                + "			<element>spoon</element>\n"
-                + "		</language_model>\n"
-                + "	</element>\n"
-                + "</object_test>\n"
-                + "<spatial_test>\n"
-                + "	<element id=\"red_spoon\">\n"
-                + "		<coords x=\"0.2345534167264518\" y=\"0.10230000108511605\">\n"
-                + "		</coords>\n"
-                + "	</element>\n"
-                + "	<element id=\"pink_bowl\">\n"
-                + "		<coords x=\"0.18594561076390148\" y=\"0.029521530892470227\">\n"
-                + "		</coords>\n"
-                + "	</element>\n"
-                + "	<element id=\"blue_bowl\">\n"
-                + "		<coords x=\"0.1133620674063841\" y=\"0.08286184575822109\">\n"
-                + "		</coords>\n"
-                + "	</element>\n"
-                + "	<element id=\"blue_spoon\">\n"
-                + "		<coords x=\"0.3714566050120225\" y=\"0.5933750007699079\">\n"
-                + "		</coords>\n"
-                + "	</element>\n"
-                + "</spatial_test>\n"
+        String in = "<corpus>\n"
+                + "	<objects>\n"
+                + "		<element>\n"
+                + "			<id>red_spoon</id>\n"
+                + "			<language_model>\n"
+                + "				<element>red</element>\n"
+                + "				<element>spoon</element>\n"
+                + "			</language_model>\n"
+                + "		</element>\n"
+                + "		<element>\n"
+                + "			<id>pink_bowl</id>\n"
+                + "			<language_model>\n"
+                + "				<element>pink</element>\n"
+                + "				<element>bowl</element>\n"
+                + "			</language_model>\n"
+                + "		</element>\n"
+                + "		<element>\n"
+                + "			<id>blue_bowl</id>\n"
+                + "			<language_model>\n"
+                + "				<element>blue</element>\n"
+                + "				<element>bowl</element>\n"
+                + "			</language_model>\n"
+                + "		</element>\n"
+                + "		<element>\n"
+                + "			<id>blue_spoon</id>\n"
+                + "			<language_model>\n"
+                + "				<element>blue</element>\n"
+                + "				<element>spoon</element>\n"
+                + "			</language_model>\n"
+                + "		</element>\n"
+                + "	</objects>\n"
+                + "	<model>\n"
+                + "		<element id=\"red_spoon\">\n"
+                + "			<coords x=\"0.38085303294643225\" y=\"0.577481346439875\">\n"
+                + "			</coords>\n"
+                + "		</element>\n"
+                + "		<element id=\"pink_bowl\">\n"
+                + "			<coords x=\"0.28256668172233046\" y=\"0.0540260956899099\">\n"
+                + "			</coords>\n"
+                + "		</element>\n"
+                + "		<element id=\"blue_bowl\">\n"
+                + "			<coords x=\"0.6530228500824846\" y=\"0.6332352761873828\">\n"
+                + "			</coords>\n"
+                + "		</element>\n"
+                + "		<element id=\"blue_spoon\">\n"
+                + "			<coords x=\"0.37957390064188856\" y=\"0.2832656650038078\">\n"
+                + "			</coords>\n"
+                + "		</element>\n"
+                + "	</model>\n"
+                + "	<corpus>\n"
+                + "		<element val=\"red_spoon\" key=\"This is a test\">\n"
+                + "		</element>\n"
+                + "	</corpus>\n"
+                + "</corpus>\n"
                 + "";
         XMLObject parseXML = XMLParser.parseXML(in);
 
-        MObjectSet a = MObjectSet.fromXML(parseXML.get("object_test"), XMLAdapterObjectLanguageModelUnigram.getInstance());
-        String s1 = a.toXML("object_test").toString();
-        String s2 = SpatialModel.fromXML(parseXML.get("spatial_test"), XMLAdapterCoords2D.getInstance(), a).toXML("spatial_test").toString();
-
-        Assert.assertEquals(in, s1.concat(s2));
+        XMLCorpusAdapter<Coords2D, ObjectLanguageModelUnigram> xmlCorpusAdapter = new XMLCorpusAdapter<>(XMLAdapterCoords2D.getInstance(), XMLAdapterObjectLanguageModelUnigram.getInstance());
+        Corpus<Coords2D> fromXML = xmlCorpusAdapter.fromXML(parseXML.get("corpus"));
+        
+        Assert.assertEquals(in, fromXML.toXML("corpus").toString());
     }
 
     private ObjectLanguageModel getModel(String s) {
