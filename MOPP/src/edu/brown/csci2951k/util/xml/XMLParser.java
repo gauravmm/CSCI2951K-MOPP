@@ -16,11 +16,12 @@ import java.util.regex.Pattern;
  */
 public final class XMLParser {
 
-    private static final Pattern tag = Pattern.compile("<(/?)([a-zA-Z0-9_:]*)(\\b[^>]*)?>");
+    private static final Pattern tag = Pattern.compile("<(/?)([a-zA-Z0-9_:]*)(\\b[^/>]*)?(/?)[\\s]*>");
     private static final int TAG_GROUP_ALL = 0;
     private static final int TAG_GROUP_SLASH = 1;
     private static final int TAG_GROUP_NAME = 2;
     private static final int TAG_GROUP_ATTR = 3;
+    private static final int TAG_GROUP_SELFCLOSE = 4;
 
     public static XMLObject parseXML(String input) {
         Stack<Pair<XMLRaw, Integer>> tagContentsStart = new Stack<>();
@@ -35,8 +36,16 @@ public final class XMLParser {
                 XMLRaw xmlRaw = new XMLRaw(name);
                 // Add the attributes to this:
                 addAttrs(xmlRaw, m.group(TAG_GROUP_ATTR));
-                // Add this to the stack:
-                tagContentsStart.push(new Pair<>(xmlRaw, m.end()));
+
+                if (m.group(TAG_GROUP_SELFCLOSE).equals("/")) {
+                    // A self-closing tag has no content.
+                    xmlRaw.setText("");
+                    // Add this to the children of the parent tag:
+                    tagContentsStart.peek().getKey().add(xmlRaw);
+                } else {
+                    // Add this to the stack:
+                    tagContentsStart.push(new Pair<>(xmlRaw, m.end()));
+                }
             } else if (m.group(TAG_GROUP_SLASH).equals("/")) {
                 Pair<XMLRaw, Integer> closingTag = tagContentsStart.pop();
                 XMLRaw xmlRaw = closingTag.getKey();
@@ -68,14 +77,14 @@ public final class XMLParser {
     private static final int ATTR_GROUP_NAME = 1;
     private static final int ATTR_GROUP_QUOTE = 2;
     private static final int ATTR_GROUP_VALUE = 3;
-    
+
     private static void addAttrs(XMLRaw xmlRaw, String inp) {
         if (inp == null || inp.isEmpty()) {
             return;
         }
-        
+
         Matcher m = attr.matcher(inp);
-        
+
         int idx = 0;
         while (m.find(idx)) {
             xmlRaw.setAttr(m.group(ATTR_GROUP_NAME), XMLAttributeEscaper.unescape(m.group(ATTR_GROUP_VALUE)));

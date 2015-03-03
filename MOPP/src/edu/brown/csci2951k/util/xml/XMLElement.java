@@ -107,14 +107,18 @@ public abstract class XMLElement {
 
     // Convenience methods:
     protected String tagO() {
-        return tagOC(tag, attr);
+        return tagOC(tag, attr, ">");
+    }
+    
+    protected String tagS() {
+        return tagOC(tag, attr, " />");
     }
 
     protected String tagC() {
         return tagCC(tag);
     }
 
-    protected static String tagOC(String c, List<Pair<String, String>> attrs) {
+    protected static String tagOC(String c, List<Pair<String, String>> attrs, String closing) {
         if (attrs == null || attrs.isEmpty()) {
             return "<" + c + ">";
         } else {
@@ -123,7 +127,7 @@ public abstract class XMLElement {
             for (Pair<String, String> p : attrs) {
                 sB.append(" ").append(p.getKey()).append("=\"").append(XMLAttributeEscaper.escape(p.getValue())).append("\"");
             }
-            return sB.append(">").toString();
+            return sB.append(closing).toString();
         }
     }
 

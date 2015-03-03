@@ -100,12 +100,16 @@ public class XMLObject extends XMLElement {
 
     @Override
     public String toString(String ind) {
-        StringBuilder rv = new StringBuilder();
-        rv.append(ind).append(tagO()).append(n);
-        for (XMLElement e : elt) {
-            rv.append(e.toString(ind + t));
+        if (elt.isEmpty()) {
+            return ind.concat(tagS()).concat(n);
+        } else {
+            StringBuilder rv = new StringBuilder();
+            rv.append(ind).append(tagO()).append(n);
+            for (XMLElement e : elt) {
+                rv.append(e.toString(ind + t));
+            }
+            return rv.append(ind).append(tagC()).append(n).toString();
         }
-        return rv.append(ind).append(tagC()).append(n).toString();
     }
 
 }
