@@ -102,25 +102,20 @@ public class XMLSerializationTest {
                 + "	</objects>\n"
                 + "	<model>\n"
                 + "		<element id=\"red_spoon\">\n"
-                + "			<coords x=\"0.38085303294643225\" y=\"0.577481346439875\">\n"
-                + "			</coords>\n"
+                + "			<coords x=\"0.38085303294643225\" y=\"0.577481346439875\" />\n"
                 + "		</element>\n"
                 + "		<element id=\"pink_bowl\">\n"
-                + "			<coords x=\"0.28256668172233046\" y=\"0.0540260956899099\">\n"
-                + "			</coords>\n"
+                + "			<coords x=\"0.28256668172233046\" y=\"0.0540260956899099\" />\n"
                 + "		</element>\n"
                 + "		<element id=\"blue_bowl\">\n"
-                + "			<coords x=\"0.6530228500824846\" y=\"0.6332352761873828\">\n"
-                + "			</coords>\n"
+                + "			<coords x=\"0.6530228500824846\" y=\"0.6332352761873828\" />\n"
                 + "		</element>\n"
                 + "		<element id=\"blue_spoon\">\n"
-                + "			<coords x=\"0.37957390064188856\" y=\"0.2832656650038078\">\n"
-                + "			</coords>\n"
+                + "			<coords x=\"0.37957390064188856\" y=\"0.2832656650038078\" />\n"
                 + "		</element>\n"
                 + "	</model>\n"
                 + "	<corpus>\n"
-                + "		<element val=\"red_spoon\" key=\"This is a test\">\n"
-                + "		</element>\n"
+                + "		<element val=\"red_spoon\" key=\"This is a test\" />\n"
                 + "	</corpus>\n"
                 + "</corpus>\n"
                 + "";
@@ -128,7 +123,7 @@ public class XMLSerializationTest {
 
         XMLCorpusAdapter<Coords2D, ObjectLanguageModelUnigram> xmlCorpusAdapter = new XMLCorpusAdapter<>(XMLAdapterCoords2D.getInstance(), XMLAdapterObjectLanguageModelUnigram.getInstance());
         Corpus<Coords2D> fromXML = xmlCorpusAdapter.fromXML(parseXML.get("corpus"));
-        
+
         Assert.assertEquals(in, fromXML.toXML("corpus").toString());
     }
 
