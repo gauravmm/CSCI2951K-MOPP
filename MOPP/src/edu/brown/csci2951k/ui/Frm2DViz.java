@@ -6,7 +6,6 @@
 package edu.brown.csci2951k.ui;
 
 import edu.brown.csci2951k.models.data.MObject;
-import edu.brown.csci2951k.models.data.MObjectSet;
 import edu.brown.csci2951k.models.space.Coords2D;
 import edu.brown.csci2951k.models.space.SpatialModel;
 import edu.brown.csci2951k.util.Pair;
@@ -26,6 +25,8 @@ public class Frm2DViz extends javax.swing.JFrame {
     public Frm2DViz(SpatialModel<Coords2D> spModel) {
         this.spModel = spModel;
         initComponents();
+        
+        this.setVisible(true);
     }
 
     public void onUpdatedMovement(MObject m){

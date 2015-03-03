@@ -29,7 +29,7 @@ public class Pnl2DVizXAxisLabel extends Pnl2DVizAxisLabel{
         double functional_min = min - (range*.25);
         double functional_max = max + (range*.25);
         for(int i = 0; i<numItems;i++){
-            String text = Double.toString((double) functional_min + ((((double)functional_max - (double)functional_min)/(double)numItems) * (double)i));
+            String text = String.format("%.3f", (double) functional_min + ((((double)functional_max - (double)functional_min)/(double)numItems) * (double)i));
             g2d.drawString(text, (int)((double)getWidth()/(double)numItems * (double)i)  , getHeight());
         }
     }
