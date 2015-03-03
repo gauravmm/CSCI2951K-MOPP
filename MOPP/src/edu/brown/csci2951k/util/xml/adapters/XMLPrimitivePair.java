@@ -16,12 +16,12 @@ import edu.brown.csci2951k.util.xml.XMLTypeAdapter;
  *
  * @author Gaurav Manek
  */
-public class XMLPrimtivePair<T, R> implements XMLTypeAdapter<Pair<T, R>> {
+public class XMLPrimitivePair<T, R> implements XMLTypeAdapter<Pair<T, R>> {
 
     private final XMLPrimitiveTypeAdapter<T> aKey;
     private final XMLPrimitiveTypeAdapter<R> aVal;
 
-    public XMLPrimtivePair(XMLPrimitiveTypeAdapter<T> aKey, XMLPrimitiveTypeAdapter<R> aVal) {
+    public XMLPrimitivePair(XMLPrimitiveTypeAdapter<T> aKey, XMLPrimitiveTypeAdapter<R> aVal) {
         this.aKey = aKey;
         this.aVal = aVal;
     }

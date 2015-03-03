@@ -33,8 +33,8 @@ public class XMLObject extends XMLElement {
         elt = children;
     }
 
-    public void add(XMLSerializable e) {
-        elt.add(e.toXML("element"));
+    public void add(String eltname, XMLSerializable e) {
+        elt.add(e.toXML(eltname));
     }
 
     public void add(XMLElement e) {
