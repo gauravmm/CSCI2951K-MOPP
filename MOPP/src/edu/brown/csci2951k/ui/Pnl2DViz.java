@@ -11,6 +11,7 @@ import edu.brown.csci2951k.models.space.Coords2D;
 import edu.brown.csci2951k.util.Pair;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.DoubleSummaryStatistics;
 import java.util.Iterator;
@@ -51,7 +52,7 @@ public class Pnl2DViz extends JPanel{
         yrange *= 1.5;
         //Draw in the grid structure
         int numBars = 10;
-        g.setColor(Color.GRAY);
+        g.setColor(new Color(200, 200, 200));
         for(int i = 1; i<numBars; i++){
             g.drawLine((int) (i*(getWidth()/numBars)), 0, (int) (i*(getWidth()/numBars)), getHeight());//Draw vertical line
             g.drawLine(0, (int) (i*(getHeight()/numBars)), getWidth(), (int) (i*(getHeight()/numBars)));//Draw vertical line//Draw horizontal line
@@ -71,7 +72,8 @@ public class Pnl2DViz extends JPanel{
             g.setColor(Color.BLUE);
             g.fillOval(startX - (width/2), startY-(height/2), width, height);
             g.setColor(Color.BLACK);
-            g.drawString(obj.getKey().getId(), startX - (width/2), startY-(height/2)+height+10);
+            g.setFont(new Font("Arial",0,28));
+            g.drawString(obj.getKey().getId(), startX - (width/2) - 30, startY-(height/2)+height+20);
         }
         
         
