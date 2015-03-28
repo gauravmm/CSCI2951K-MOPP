@@ -1,0 +1,69 @@
+<corpus_14>
+	<objects>
+		<element>
+			<id>pink_sphere</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="1" key="pink" />
+				<element val="2" key="sphere" />
+			</language_model>
+		</element>
+		<element>
+			<id>yellow_box</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="1" key="yellow" />
+				<element val="3" key="box" />
+			</language_model>
+		</element>
+		<element>
+			<id>red_sphere</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="2" key="red" />
+				<element val="2" key="sphere" />
+			</language_model>
+		</element>
+		<element>
+			<id>orange_box</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="1" key="orange" />
+				<element val="3" key="box" />
+			</language_model>
+		</element>
+		<element>
+			<id>red_box</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="2" key="red" />
+				<element val="3" key="box" />
+			</language_model>
+		</element>
+	</objects>
+	<model>
+		<element id="pink_sphere">
+			<coords x="146.0" y="283.0" />
+		</element>
+		<element id="yellow_box">
+			<coords x="653.0" y="633.0" />
+		</element>
+		<element id="red_sphere">
+			<coords x="333.0" y="283.0" />
+		</element>
+		<element id="orange_box">
+			<coords x="412.0" y="312.0" />
+		</element>
+		<element id="red_box">
+			<coords x="380.0" y="55.0" />
+		</element>
+	</model>
+	<corpus>
+		<element val="red_sphere" key="The sphere between the pink sphere and the orange box." />
+		<element val="orange_box" key="The box to the right of the red sphere." />
+		<element val="red_sphere" key="The sphere to the right of the pink sphere." />
+		<element val="pink_sphere" key="The sphere on the left of the red sphere." />
+		<element val="red_sphere" key="The sphere on the left of the orange box." />
+		<element val="red_sphere" key="The sphere near the box." />
+		<element val="orange_box" key="The box near the sphere." />
+		<element val="orange_box" key="The box near the red sphere." />
+		<element val="red_sphere" key="The sphere in front of the red box." />
+		<element val="orange_box" key="The box in front of the orange box." />
+	</corpus>
+</corpus_14>
+

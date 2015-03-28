@@ -1,0 +1,61 @@
+<corpus_01>
+	<objects>
+		<element>
+			<id>red_spoon</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="1" key="red" />
+				<element val="2" key="spoon" />
+			</language_model>
+		</element>
+		<element>
+			<id>pink_bowl</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="1" key="pink" />
+				<element val="2" key="bowl" />
+			</language_model>
+		</element>
+		<element>
+			<id>blue_bowl</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="2" key="blue" />
+				<element val="2" key="bowl" />
+			</language_model>
+		</element>
+		<element>
+			<id>blue_spoon</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="2" key="blue" />
+				<element val="2" key="spoon" />
+			</language_model>
+		</element>
+	</objects>
+	<model>
+		<element id="red_spoon">
+			<coords x="125.0" y="527.0" />
+		</element>
+		<element id="pink_bowl">
+			<coords x="100.0" y="654.0" />
+		</element>
+		<element id="blue_bowl">
+			<coords x="253.0" y="603.0" />
+		</element>
+		<element id="blue_spoon">
+			<coords x="893.0" y="493.0" />
+		</element>
+	</model>
+	<corpus>
+		<element val="blue_bowl" key="The blue thing between the pink bowl and the red spoon." />
+		<element val="blue_bowl" key="The object between the spoon and the pink thing." />
+		<element val="blue_spoon" key="The spoon to the right of the red spoon." />
+		<element val="blue_bowl" key="The bowl to the right of the pink bowl." />
+		<element val="red_spoon" key="The spoon on the left of the other spoon." />
+		<element val="pink_bowl" key="The bowl on the left of the blue bowl." />
+		<element val="red_spoon" key="The spoon near the blue bowl." />
+		<element val="blue_bowl" key="The bowl near the pink thing." />
+		<element val="pink_bowl" key="The pink object near the bowl." />
+		<element val="blue_bowl" key="The blue thing in front of the spoon." />
+		<element val="pink_bowl" key="The bowl in front of the blue thing." />
+		<element val="pink_bowl" key="The pink thing in front of the bowl." />
+	</corpus>
+</corpus_01>
+

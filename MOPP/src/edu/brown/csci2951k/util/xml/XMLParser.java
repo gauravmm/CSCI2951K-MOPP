@@ -72,7 +72,7 @@ public final class XMLParser {
         }
     }
 
-    private static final Pattern attr = Pattern.compile("([a-zA-Z0-9]*)\\s*=\\s*(['\"])([^'\"]*)\\2");
+    private static final Pattern attr = Pattern.compile("([a-zA-Z0-9_]*)\\s*=\\s*(['\"])([^'\"]*)\\2");
     private static final int ATTR_GROUP_ALL = 0;
     private static final int ATTR_GROUP_NAME = 1;
     private static final int ATTR_GROUP_QUOTE = 2;
