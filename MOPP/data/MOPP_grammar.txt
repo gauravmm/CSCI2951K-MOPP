@@ -1,0 +1,46 @@
+RAIZ ::= NP
+
+NP ::= SNP <&> PP
+-10 # SNP ::= DET <&> N
+-10 # SNP ::= DET <&> JJ <&> N
+-10 # SNP ::= JJ <&> N
+SNP ::= N
+NP ::= SNP
+
+-10 # PP ::= PREP_UNARY <&> NP
+-10 # PP ::= PREP_BINARY <&> NP <&> CC <&> NP
+PREP_UNARY ::= on <&> the <&> DIRECTION <&> of
+PREP_UNARY ::= to <&> the <&> DIRECTION <&> of
+
+CC ::= and
+
+PREP_BINARY ::= between
+PREP_UNARY ::= near
+PREP_UNARY ::= DIRECTION <&> of
+
+DIRECTION ::= left
+DIRECTION ::= right
+DIRECTION ::= front
+DIRECTION ::= in <&> front
+
+N ::= bowl
+N ::= spoon
+N ::= toy
+N ::= hamster
+N ::= sphere
+N ::= duck
+N ::= thing
+N ::= object
+N ::= sphere
+N ::= box
+
+DET ::= the
+DET ::= The
+DET ::= a
+
+JJ ::= red
+JJ ::= blue
+JJ ::= pink
+JJ ::= yellow
+JJ ::= orange
+JJ ::= other
