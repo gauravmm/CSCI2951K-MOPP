@@ -18,9 +18,12 @@ import edu.brown.csci2951k.util.xml.XMLSerializable;
 import edu.brown.csci2951k.util.xml.adapters.XMLPrimitivePair;
 import edu.brown.csci2951k.util.xml.adapters.XMLPrimitiveString;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  *
@@ -54,7 +57,7 @@ public class Corpus<T extends SpatialCoords> implements XMLSerializable {
         return corpus;
     }
 
-    public Pair<List<Pair<String, MObject>>, List<Pair<String, MObject>>> getSplitCorpus(double frac) {
+    public Pair<List<Integer>, Pair<Corpus<T>, Corpus<T>>> getSplitCorpus(double frac) {
         if (frac < 0 || frac > 1) {
             throw new IllegalArgumentException("This shouldn't happen.");
         }
@@ -64,8 +67,25 @@ public class Corpus<T extends SpatialCoords> implements XMLSerializable {
         sz = Math.max(sz, 1);
 
         ArrayList<Pair<String, MObject>> c = new ArrayList<>(corpus);
-        Collections.shuffle(c);
-        return new Pair<>(c.subList(0, sz), c.subList(sz, corpus.size()));
+        List<Integer> testSetIdx = Arrays.asList(IntStream.range(0, corpus.size()).mapToObj(Integer::new).toArray(Integer[]::new));
+        Collections.shuffle(testSetIdx);
+        testSetIdx = testSetIdx.subList(0, sz);
+        
+        List<Pair<String, MObject>> cTest = new ArrayList<>();
+        List<Pair<String, MObject>> cTrain = new ArrayList<>();
+        
+        for(int i = 0; i < corpus.size(); ++i) {
+            if(testSetIdx.contains(i)){
+                cTest.add(corpus.get(i));
+            } else {
+                cTrain.add(corpus.get(i));
+            }
+        }
+        
+        return new Pair<>(
+                testSetIdx,
+                new Pair(new Corpus<>(obj, sM, cTest),
+                        new Corpus<>(obj, sM, cTrain)));
     }
 
     @Override
