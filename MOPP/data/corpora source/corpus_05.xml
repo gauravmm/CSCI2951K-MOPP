@@ -54,7 +54,7 @@
 		<element val="red_spoon" key="The spoon near the pink thing." />
 		<element val="blue_bowl" key="The blue thing near the pink thing." />
 		<element val="blue_bowl" key="The bowl near the blue spoon." />
-		<element val="pink_bowl" key="The bowl thing in front of the red thing." />
+		<element val="pink_bowl" key="The bowl in front of the red thing." />
 		<element val="blue_spoon" key="The spoon in front of the bowl." />
 		<element val="blue_bowl" key="The bowl in front of the pink thing." />
 	</corpus>

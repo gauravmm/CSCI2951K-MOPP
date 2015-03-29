@@ -58,7 +58,7 @@
 		<element val="blue_bowl" key="The bowl between the pink thing and the blue thing." />
 		<element val="red_bowl" key="The bowl to the right of the pink thing." />
 		<element val="blue_spoon" key="The spoon to the right of the blue bowl." />
-		<element val="blue_bowl" key="The bowl to the right of the red_thing." />
+		<element val="blue_bowl" key="The bowl to the right of the red thing." />
 		<element val="red_spoon" key="The spoon on the left of the blue thing." />
 		<element val="pink_bowl" key="The bowl on the left of the bowl." />
 		<element val="blue_bowl" key="The bowl on the left of the red spoon." />
