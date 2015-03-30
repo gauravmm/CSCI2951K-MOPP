@@ -42,11 +42,12 @@ public class Coords2D implements SpatialCoords {
 
         throw new IllegalArgumentException("dim out of bounds");
     }
-    
-    public double getX(){
+
+    public double getX() {
         return get(0);
     }
-    public double getY(){
+
+    public double getY() {
         return get(1);
     }
 
@@ -57,6 +58,10 @@ public class Coords2D implements SpatialCoords {
         rv.setAttr("x", d.toXMLContents(x));
         rv.setAttr("y", d.toXMLContents(y));
         return rv;
+    }
+
+    public double getDistanceTo(Coords2D get) {
+        return Math.sqrt(Math.pow(x - get.getX(), 2.0) + Math.pow(y - get.getY(), 2.0));
     }
 
 }

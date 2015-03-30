@@ -40,6 +40,8 @@ public class MOPP {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        CorpusParsing.main(args);
+        
         if (args.length != 2) {
             System.out.println("Usage: java -cp MOPP.jar FILE_TRAIN FILE_TEST");
             System.exit(1);

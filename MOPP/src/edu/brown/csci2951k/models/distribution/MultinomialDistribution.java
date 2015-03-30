@@ -4,10 +4,12 @@ import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.data.MObjectSet;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,6 +29,10 @@ public class MultinomialDistribution {
     
     private final Map<MObject,Double> vals;
 
+    public static MultinomialDistribution getLanguageDistribution(MObjectSet set, List<String> target) {
+        return (new MultinomialDistribution(set, (MObject o) -> o.getLanguageModel().probabilityOf(target))).normalize();
+    }
+    
     public MObjectSet getObjects() {
         return objs;
     }
@@ -34,6 +40,13 @@ public class MultinomialDistribution {
     public MultinomialDistribution(MObjectSet objs, Map<MObject,Double> vals) {
         this.objs = objs;
         this.vals = vals;
+    }
+    
+    public MultinomialDistribution(MObjectSet objs, Function<MObject,Double> mappingFunc) {
+        this.objs = objs;
+        this.vals = new HashMap<>();
+        
+        objs.forEach((o) -> vals.put(o, mappingFunc.apply(o)));
     }
 
     public Set<Map.Entry<MObject, Double>> get() {
