@@ -11,20 +11,15 @@ import edu.brown.csci2951k.models.language.ObjectLanguageModelUnigram;
 import edu.brown.csci2951k.models.language.XMLAdapterObjectLanguageModelUnigram;
 import edu.brown.csci2951k.models.space.Coords2D;
 import edu.brown.csci2951k.models.space.XMLAdapterCoords2D;
-import edu.brown.csci2951k.ui.Frm2DViz;
 import edu.brown.csci2951k.util.Pair;
 import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLParser;
 import edu.brown.csci2951k.util.xml.XMLSerializingException;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -61,7 +56,7 @@ public class CorpusSplitter {
                 testCorpora.add(splitCorpus.getValue().getKey().toXML(name).toString());
                 trainingCorpora.add(splitCorpus.getValue().getValue().toXML(name).toString());
                 List<Integer> idxes = splitCorpus.getKey();
-                corpusSplit.add(IntStream.range(0, corpus_max).mapToObj((i) -> idxes.contains(i)? "test":"train").collect(Collectors.joining(", ", name, "")));
+                corpusSplit.add(IntStream.range(0, corpus_max).mapToObj((i) -> idxes.contains(i)? "test":"train").collect(Collectors.joining(", ", name + ", ", "")));
             } catch(XMLSerializingException e){
                 System.out.println("[ERROR] Exception parsing ".concat(a).concat(": ").concat(e.getMessage()));
                 e.printStackTrace();
