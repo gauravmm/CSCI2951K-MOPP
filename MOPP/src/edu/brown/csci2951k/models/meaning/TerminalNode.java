@@ -28,7 +28,7 @@ public final class TerminalNode implements MeaningNode {
     }
 
     @Override
-    public <S extends SpatialCoords> MultinomialDistribution apply(SpatialModel<S> model, MObjectSet objectSet, Function<Meanings.PP, SpatialFeature> featureMapping) {
+    public <S extends SpatialCoords> MultinomialDistribution apply(SpatialModel<S> model, MObjectSet objectSet, Function<Meanings.PP, SpatialFeature<S>> featureMapping) {
         return MultinomialDistribution.getLanguageDistribution(objectSet, simpleNP);
     }
 

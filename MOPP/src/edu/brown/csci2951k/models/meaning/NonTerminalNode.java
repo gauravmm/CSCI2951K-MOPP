@@ -41,7 +41,7 @@ public class NonTerminalNode implements MeaningNode {
     }
 
     @Override
-    public <S extends SpatialCoords> MultinomialDistribution apply(SpatialModel<S> model, MObjectSet objectSet, Function<Meanings.PP, SpatialFeature> featureMapping) {
+    public <S extends SpatialCoords> MultinomialDistribution apply(SpatialModel<S> model, MObjectSet objectSet, Function<Meanings.PP, SpatialFeature<S>> featureMapping) {
         SpatialFeature feature = featureMapping.apply(type);
         if (!feature.bindsTo(children.size())) {
             throw new RuntimeException("This feature cannot be applied to these many children.");
