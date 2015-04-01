@@ -48,7 +48,7 @@ public class SpatialFeature2OrdinalWrapper<T extends SpatialCoords> extends Spat
                 .map((o) -> new Pair<>(o, wrapped.apply(model, Arrays.asList(main, o))))
                 .sorted((p1, p2) -> p1.getValue().compareTo(p2.getValue())).iterator();
 
-        int i = 0;
+        int i = 1;
         while (collect.hasNext()) {
             if (collect.next().equals(ordinal)) {
                 break;
