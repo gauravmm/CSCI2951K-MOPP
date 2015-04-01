@@ -105,7 +105,7 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
 
     @Override
     public Object[] toArray() {
-        throw new UnsupportedOperationException("Read-only set.");
+        return mset.toArray();
     }
 
     @Override

@@ -20,6 +20,8 @@ import java.util.function.Function;
 public interface MeaningNode {
 
     <S extends SpatialCoords> MultinomialDistribution apply(SpatialModel<S> model, MObjectSet objectSet, Function<Meanings.PP, SpatialFeature<S>> featureMapping);
+    
+    MultinomialDistribution getPrior(MObjectSet objectSet);
 
     XMLElement toXML(String name, MObjectSet objectSet);
     

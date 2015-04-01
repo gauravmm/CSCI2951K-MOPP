@@ -17,6 +17,7 @@ import edu.brown.csci2951k.util.xml.XMLCollection;
 import edu.brown.csci2951k.util.xml.XMLElement;
 import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLTypeAdapter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.DoubleSummaryStatistics;
 import java.util.Iterator;
@@ -33,11 +34,11 @@ import java.util.stream.IntStream;
 public class NonTerminalNode implements MeaningNode {
 
     private final Meanings.PP type;
-    private final Collection<MeaningNode> children;
+    private final List<MeaningNode> children;
 
     protected NonTerminalNode(Meanings.PP type, Collection<MeaningNode> children) {
         this.type = type;
-        this.children = children;
+        this.children = new ArrayList<>(children);
     }
 
     @Override
@@ -103,6 +104,15 @@ public class NonTerminalNode implements MeaningNode {
         rv.setAttr("type", type.name());
 
         return rv;
+    }
+
+    public Meanings.PP getType() {
+        return type;
+    }
+    
+    @Override
+    public MultinomialDistribution getPrior(MObjectSet objectSet) {
+        return children.get(0).getPrior(objectSet);
     }
 
 }

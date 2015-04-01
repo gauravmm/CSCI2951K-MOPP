@@ -25,7 +25,7 @@ public class PowerSetIterator<T> implements Iterator<List<T>> {
         this.num = num;
         curr = new int[num];
         for (int i = 0; i < num; ++i) {
-            curr[num] = 0;
+            curr[i] = 0;
         }
     }
 

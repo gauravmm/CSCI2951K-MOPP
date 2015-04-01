@@ -20,8 +20,8 @@ public class FilteredIterator<T> implements Iterator<T> {
 
     public FilteredIterator(Iterator<T> wrapped, Predicate<T> p) {
         this.wrapped = wrapped;
-        prepareNext();
         this.p = p;
+        prepareNext();
     }
 
     @Override

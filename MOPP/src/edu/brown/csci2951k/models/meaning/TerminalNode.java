@@ -41,4 +41,9 @@ public final class TerminalNode implements MeaningNode {
     public XMLElement toXML(String name, MObjectSet objectSet) {
         return MultinomialDistribution.getLanguageDistribution(objectSet, simpleNP).toXML(name);
     }
+
+    @Override
+    public MultinomialDistribution getPrior(MObjectSet objectSet) {
+        return MultinomialDistribution.getLanguageDistribution(objectSet, simpleNP);
+    }
 }
