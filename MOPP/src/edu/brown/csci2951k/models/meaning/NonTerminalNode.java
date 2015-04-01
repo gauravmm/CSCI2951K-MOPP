@@ -13,6 +13,10 @@ import edu.brown.csci2951k.models.distribution.MultinomialDistribution;
 import edu.brown.csci2951k.models.features.SpatialFeature;
 import edu.brown.csci2951k.models.space.SpatialCoords;
 import edu.brown.csci2951k.models.space.SpatialModel;
+import edu.brown.csci2951k.util.xml.XMLCollection;
+import edu.brown.csci2951k.util.xml.XMLElement;
+import edu.brown.csci2951k.util.xml.XMLObject;
+import edu.brown.csci2951k.util.xml.XMLTypeAdapter;
 import java.util.Collection;
 import java.util.DoubleSummaryStatistics;
 import java.util.Iterator;
@@ -81,6 +85,24 @@ public class NonTerminalNode implements MeaningNode {
         return String.format("(%s %s)", type.toString(), children.stream().map((c) -> c.toString()).collect(Collectors.joining(" ")));
     }
 
+    @Override
+    public XMLElement toXML(String name, MObjectSet objectSet) {
+        XMLCollection rv = new XMLCollection(name, new XMLTypeAdapter<MeaningNode>() {
 
+            @Override
+            public XMLElement toXML(String name, MeaningNode input) {
+                return input.toXML(name, objectSet);
+            }
+
+            @Override
+            public MeaningNode fromXML(XMLElement input) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        }, children);
+
+        rv.setAttr("type", type.name());
+
+        return rv;
+    }
 
 }

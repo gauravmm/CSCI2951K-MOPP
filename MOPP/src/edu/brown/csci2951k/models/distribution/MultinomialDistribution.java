@@ -2,6 +2,13 @@ package edu.brown.csci2951k.models.distribution;
 
 import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.data.MObjectSet;
+import edu.brown.csci2951k.models.data.XMLPrimitiveMObjectReference;
+import edu.brown.csci2951k.util.Pair;
+import edu.brown.csci2951k.util.xml.XMLCollection;
+import edu.brown.csci2951k.util.xml.XMLElement;
+import edu.brown.csci2951k.util.xml.XMLSerializable;
+import edu.brown.csci2951k.util.xml.adapters.XMLPrimitiveDouble;
+import edu.brown.csci2951k.util.xml.adapters.XMLPrimitivePair;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +31,7 @@ import java.util.function.Function;
  * @author Gaurav Manek
  * @param <T>
  */
-public class MultinomialDistribution {
+public class MultinomialDistribution implements XMLSerializable {
     
     private final MObjectSet objs;
     
@@ -102,6 +110,11 @@ public class MultinomialDistribution {
             return false;
         }
         return Objects.equals(this.vals, other.vals);
+    }
+
+    @Override
+    public XMLElement toXML(String xmlObjectName) {
+        return new XMLCollection(xmlObjectName, new XMLPrimitivePair(new XMLPrimitiveMObjectReference(objs), XMLPrimitiveDouble.getInstance()), vals.entrySet().stream().map(Pair::to).collect(Collectors.toList()));
     }
 
 }

@@ -10,6 +10,7 @@ import edu.brown.csci2951k.models.distribution.MultinomialDistribution;
 import edu.brown.csci2951k.models.features.SpatialFeature;
 import edu.brown.csci2951k.models.space.SpatialCoords;
 import edu.brown.csci2951k.models.space.SpatialModel;
+import edu.brown.csci2951k.util.xml.XMLElement;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,5 +35,10 @@ public final class TerminalNode implements MeaningNode {
     @Override
     public String toString() {
         return simpleNP.stream().collect(Collectors.joining(" ", "\"", "\""));
+    }
+
+    @Override
+    public XMLElement toXML(String name, MObjectSet objectSet) {
+        return MultinomialDistribution.getLanguageDistribution(objectSet, simpleNP).toXML(name);
     }
 }
