@@ -96,7 +96,7 @@ public class CorpusLearningPrep {
     private static String processCorpus(Corpus c, EarleyParser eP) {
         XMLObject rv = new XMLObject("corpus");
         rv.add("objects", c.getObj());
-        rv.add("model", c.getsM());
+        rv.add("model", c.getSM());
         // new XMLCollection("corpus", xmlPrimitivePairAdapter, this.corpus)
         // rv.add();
         Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();

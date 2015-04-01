@@ -45,7 +45,7 @@ public class CorpusVisualizer {
                 XMLObject parseXML = XMLParser.parseXML(collect);
                 Corpus<Coords2D> fromXML = xmlCorpusAdapter.fromXML(parseXML.get("corpus"));
                 
-                (new Frm2DViz(fromXML.getsM())).setTitle(a);
+                (new Frm2DViz(fromXML.getSM())).setTitle(a);
             } catch(XMLSerializingException e){
                 System.out.println("[ERROR] Exception parsing ".concat(a).concat(": ").concat(e.getMessage()));
                 e.printStackTrace();

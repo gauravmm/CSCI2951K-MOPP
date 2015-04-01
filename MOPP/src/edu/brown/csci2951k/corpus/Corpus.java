@@ -49,7 +49,7 @@ public class Corpus<T extends SpatialCoords> implements XMLSerializable {
         return obj;
     }
 
-    public SpatialModel<T> getsM() {
+    public SpatialModel<T> getSM() {
         return sM;
     }
 
