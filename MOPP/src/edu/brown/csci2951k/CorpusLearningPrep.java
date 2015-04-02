@@ -19,8 +19,6 @@ import edu.brown.csci2951k.models.space.SpatialCoords;
 import edu.brown.csci2951k.models.space.XMLAdapterCoords2D;
 import edu.brown.csci2951k.util.Pair;
 import edu.brown.csci2951k.util.support.TokenizedSentence;
-import edu.brown.csci2951k.util.xml.XMLCollection;
-import edu.brown.csci2951k.util.xml.XMLElement;
 import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLParser;
 import edu.brown.csci2951k.util.xml.XMLPrimitive;
@@ -29,16 +27,14 @@ import edu.brown.csci2951k.util.xml.adapters.XMLPrimitiveString;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import ontopt.pen.EarleyParser;
 import ontopt.pen.GrammarException;
-import ontopt.pen.Outputter;
 import ontopt.pen.SemanticNode;
 import ontopt.pen.Sentence;
 
@@ -51,7 +47,7 @@ public class CorpusLearningPrep {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         CorpusParsing.main(args);
 
         if (args.length != 2) {
@@ -81,16 +77,16 @@ public class CorpusLearningPrep {
             return;
         }
 
-        
         // Train:
-        for (Corpus c : corpusTrain) {
-            System.out.println(processCorpus(c, eP));
-        }
+        runCorpus(corpusTrain, eP, "corpus_train_parsed");
         // Test:
-        for (Corpus c : corpusTest) {
-            System.out.println(processCorpus(c, eP));
-        }
+        runCorpus(corpusTest, eP, "corpus_test_parsed");
 
+    }
+
+    private static <T extends SpatialCoords> void runCorpus(List<Corpus<T>> co, EarleyParser eP, String n) throws IOException {
+        List<String> output = co.stream().map((c) -> processCorpus(c, eP)).collect(Collectors.toList());
+        Files.write(Paths.get(n.concat(".xml")), output, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
     }
 
     private static String processCorpus(Corpus c, EarleyParser eP) {
@@ -106,16 +102,16 @@ public class CorpusLearningPrep {
         XMLObject xmlC = new XMLObject("corpus");
         while (itr.hasNext()) {
             Pair<String, MObject> cp = itr.next();
-            
+
             XMLObject xmlCE = new XMLObject("element");
             xmlCE.setAttr("key", cp.getKey());
             xmlCE.setAttr("value", mref.toXMLContents(cp.getValue()));
-                    
+
             Sentence sen = new TokenizedSentence(cp.getKey());
             ArrayList<SemanticNode> parses = eP.parseSentence(sen);
             MeaningNode convert = MeaningConverter.convert(parses.get(0));
             xmlCE.add(new XMLPrimitive("debug", XMLPrimitiveString.getInstance(), convert.toString()));
-            
+
             xmlCE.add(convert.toXML("meaning", c.getObj()));
 
             xmlC.add(xmlCE);
