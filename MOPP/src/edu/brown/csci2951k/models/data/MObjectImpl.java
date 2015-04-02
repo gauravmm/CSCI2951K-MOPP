@@ -66,4 +66,8 @@ public class MObjectImpl implements MObject {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "MObject{" + id + '}';
+    }
 }

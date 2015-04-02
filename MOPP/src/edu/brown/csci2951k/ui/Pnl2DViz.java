@@ -26,7 +26,7 @@ public class Pnl2DViz extends JPanel{
     
     private SpatialModel<Coords2D> model;
 
-    public Pnl2DViz(SpatialModel model) {
+    public Pnl2DViz(SpatialModel<Coords2D> model) {
         this.model = model;
     }
     

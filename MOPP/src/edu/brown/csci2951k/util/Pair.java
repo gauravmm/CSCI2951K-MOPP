@@ -13,6 +13,10 @@ import java.util.Map;
  */
 public class Pair<X, Y> implements Map.Entry<X, Y> {
 
+    public static <R, T> Pair<R, T> to(Map.Entry<R, T> e) {
+        return new Pair<>(e.getKey(), e.getValue());
+    }
+
     private final X key;
     private final Y value;
 

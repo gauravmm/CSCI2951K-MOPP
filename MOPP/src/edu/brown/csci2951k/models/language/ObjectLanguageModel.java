@@ -5,7 +5,9 @@
  */
 package edu.brown.csci2951k.models.language;
 
+import edu.brown.csci2951k.models.distribution.MultinomialDistribution;
 import edu.brown.csci2951k.util.xml.XMLSerializable;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -28,5 +30,9 @@ public abstract class ObjectLanguageModel implements Function<String,Double>, XM
     }
 
     protected abstract Double probOfImpl(String in);
+
+    public final Double probabilityOf(List<String> target) {
+        return target.stream().mapToDouble(this::probabilityOf).reduce(1.0, (a, b) -> a * b);
+    }
     
 }

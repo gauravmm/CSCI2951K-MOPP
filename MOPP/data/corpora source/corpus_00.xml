@@ -1,0 +1,61 @@
+<corpus_00>
+	<objects>
+		<element>
+			<id>red_spoon</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="1" key="red" />
+				<element val="2" key="spoon" />
+			</language_model>
+		</element>
+		<element>
+			<id>pink_bowl</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="1" key="pink" />
+				<element val="2" key="bowl" />
+			</language_model>
+		</element>
+		<element>
+			<id>blue_bowl</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="2" key="blue" />
+				<element val="2" key="bowl" />
+			</language_model>
+		</element>
+		<element>
+			<id>blue_spoon</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="2" key="blue" />
+				<element val="2" key="spoon" />
+			</language_model>
+		</element>
+	</objects>
+	<model>
+		<element id="red_spoon">
+			<coords x="381.0" y="577.0" />
+		</element>
+		<element id="pink_bowl">
+			<coords x="283.0" y="54.0" />
+		</element>
+		<element id="blue_bowl">
+			<coords x="653.0" y="633.0" />
+		</element>
+		<element id="blue_spoon">
+			<coords x="333.0" y="283.0" />
+		</element>
+	</model>
+	<corpus>
+		<element val="blue_spoon" key="The blue spoon between the pink bowl and the red spoon." />
+		<element val="blue_spoon" key="The object between the pink thing and the red thing." />
+		<element val="blue_bowl" key="The bowl to the right of the red spoon." />
+		<element val="blue_spoon" key="The spoon to the right of the pink bowl." />
+		<element val="red_spoon" key="The spoon to the right of the pink bowl." />
+		<element val="blue_spoon" key="The spoon on the left of the other spoon." />
+		<element val="pink_bowl" key="The bowl on the left of the spoon." />
+		<element val="pink_bowl" key="The bowl near the spoon." />
+		<element val="blue_spoon" key="The spoon near the bowl." />
+		<element val="blue_spoon" key="The blue object near the bowl." />
+		<element val="red_spoon" key="The spoon in front of the other spoon." />
+		<element val="blue_spoon" key="The spoon in front of the bowl." />
+	</corpus>
+</corpus_00>
+

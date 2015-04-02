@@ -11,6 +11,7 @@ import edu.brown.csci2951k.util.xml.XMLElement;
 import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLSerializable;
 import edu.brown.csci2951k.util.xml.XMLTypeAdapter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,14 +30,14 @@ import java.util.stream.Stream;
  */
 public class MObjectSet implements Set<MObject>, XMLSerializable {
 
-    private final Set<MObject> mset;
+    private final List<MObject> mset;
 
     public MObjectSet(Collection<MObject> mset) {
         if (mset.isEmpty()) {
             throw new IllegalArgumentException("MObjectSet cannot be empty.");
         }
 
-        this.mset = Collections.unmodifiableSet(new HashSet<>(mset));
+        this.mset = Collections.unmodifiableList(new ArrayList<>(mset));
 
         if (mset.size() != this.mset.size()) {
             throw new IllegalArgumentException("MObjectSet cannot include duplicate objects.");
@@ -104,7 +105,7 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
 
     @Override
     public Object[] toArray() {
-        throw new UnsupportedOperationException("Read-only set.");
+        return mset.toArray();
     }
 
     @Override
@@ -161,6 +162,6 @@ public class MObjectSet implements Set<MObject>, XMLSerializable {
     
     public static <L extends ObjectLanguageModel> MObjectSet fromXML(XMLElement parseXML, XMLTypeAdapter<L> langModAdapter) {
         XMLAdapterMObjectImpl adapter = new XMLAdapterMObjectImpl<>(langModAdapter);
-        return new MObjectSet(parseXML.getCollectionValue(HashSet::new, adapter));
+        return new MObjectSet(parseXML.getCollectionValue(ArrayList::new, adapter));
     }
 }

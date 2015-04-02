@@ -1,0 +1,69 @@
+<corpus_19>
+	<objects>
+		<element>
+			<id>red_duck</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="2" key="red" />
+				<element val="2" key="duck" />
+			</language_model>
+		</element>
+		<element>
+			<id>yellow_hamster</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="2" key="hamster" />
+				<element val="2" key="yellow" />
+			</language_model>
+		</element>
+		<element>
+			<id>yellow_duck</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="2" key="duck" />
+				<element val="2" key="yellow" />
+			</language_model>
+		</element>
+		<element>
+			<id>red_sphere</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="2" key="red" />
+				<element val="1" key="sphere" />
+			</language_model>
+		</element>
+		<element>
+			<id>pink_hamster</id>
+			<language_model object_count="5" alpha="0.1">
+				<element val="1" key="pink" />
+				<element val="2" key="hamster" />
+			</language_model>
+		</element>
+	</objects>
+	<model>
+		<element id="red_duck">
+			<coords x="343.0" y="453.0" />
+		</element>
+		<element id="yellow_hamster">
+			<coords x="486.0" y="564.0" />
+		</element>
+		<element id="yellow_duck">
+			<coords x="523.0" y="134.0" />
+		</element>
+		<element id="red_sphere">
+			<coords x="112.0" y="212.0" />
+		</element>
+		<element id="pink_hamster">
+			<coords x="252.0" y="368.0" />
+		</element>
+	</model>
+	<corpus>
+		<element val="red_duck" key="The thing between the pink hamster and the yellow hamster." />
+		<element val="red_duck" key="The thing between the pink thing and the yellow thing." />
+		<element val="pink_hamster" key="The thing between the red sphere and the red duck." />
+		<element val="pink_hamster" key="The thing between the red thing and the red thing." />
+		<element val="red_duck" key="The red thing to the right of the pink hamster." />
+		<element val="pink_hamster" key="The thing on the left of the red duck." />
+		<element val="yellow_duck" key="The duck near the hamster." />
+		<element val="pink_hamster" key="The thing near the red duck." />
+		<element val="yellow_hamster" key="The yellow thing near the red duck." />
+		<element val="yellow_hamster" key="The hamster in front of the yellow duck." />
+	</corpus>
+</corpus_19>
+

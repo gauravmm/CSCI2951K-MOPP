@@ -1,0 +1,62 @@
+<corpus_04>
+	<objects>
+		<element>
+			<id>red_spoon</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="1" key="red" />
+				<element val="2" key="spoon" />
+			</language_model>
+		</element>
+		<element>
+			<id>pink_bowl</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="1" key="pink" />
+				<element val="2" key="bowl" />
+			</language_model>
+		</element>
+		<element>
+			<id>blue_bowl</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="2" key="blue" />
+				<element val="2" key="bowl" />
+			</language_model>
+		</element>
+		<element>
+			<id>blue_spoon</id>
+			<language_model object_count="4" alpha="0.1">
+				<element val="2" key="blue" />
+				<element val="2" key="spoon" />
+			</language_model>
+		</element>
+	</objects>
+	<model>
+		<element id="red_spoon">
+			<coords x="125.0" y="908.0" />
+		</element>
+		<element id="pink_bowl">
+			<coords x="374.0" y="761.0" />
+		</element>
+		<element id="blue_bowl">
+			<coords x="503.0" y="503.0" />
+		</element>
+		<element id="blue_spoon">
+			<coords x="693.0" y="327.0" />
+		</element>
+	</model>
+	<corpus>
+		<element val="pink_bowl" key="The pink thing between the red spoon and the blue bowl." />
+		<element val="pink_bowl" key="The bowl between the red thing and the bowl." />
+		<element val="blue_bowl" key="The bowl between the spoon and the pink thing." />
+		<element val="pink_bowl" key="The bowl to the right of the red spoon." />
+		<element val="blue_spoon" key="The spoon to the right of the bowl." />
+		<element val="red_spoon" key="The spoon on the left of the pink thing." />
+		<element val="blue_bowl" key="The bowl on the left of the spoon." />
+		<element val="red_spoon" key="The spoon near the pink thing." />
+		<element val="blue_bowl" key="The blue thing near the pink thing." />
+		<element val="blue_bowl" key="The bowl near the blue spoon." />
+		<element val="pink_bowl" key="The bowl in front of the blue bowl." />
+		<element val="pink_bowl" key="The bowl in front of the other bowl." />
+		<element val="blue_bowl" key="The bowl in front of the spoon." />
+	</corpus>
+</corpus_04>
+

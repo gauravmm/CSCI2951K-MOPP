@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -49,6 +50,10 @@ public class SpatialModel<T extends SpatialCoords> implements XMLSerializable {
         coords.forEach((c) -> locationMap.put(c.getKey(), c.getValue()));
     }
 
+    public T get(MObject o) {
+        return Optional.of(locationMap.get(o)).get();
+    }
+
     public Stream<Pair<MObject, T>> stream() {
         return locationMap.entrySet().stream().map((e) -> new Pair<>(e.getKey(), e.getValue()));
     }
@@ -64,6 +69,10 @@ public class SpatialModel<T extends SpatialCoords> implements XMLSerializable {
         locationMap.put(k, v);
 
         fireListeners(k);
+    }
+
+    public MObjectSet getObjects() {
+        return objects;
     }
 
     private final List<SpatialChangeListener> listeners = new LinkedList<>();

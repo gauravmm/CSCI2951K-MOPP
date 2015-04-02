@@ -10,7 +10,6 @@ import edu.brown.csci2951k.util.xml.XMLElement;
 import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLTypeAdapter;
 import edu.brown.csci2951k.util.xml.adapters.XMLPrimitiveString;
-import java.util.Optional;
 
 /**
  *
