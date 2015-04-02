@@ -33,6 +33,7 @@ N ::= thing
 N ::= object
 N ::= sphere
 N ::= box
+N ::= tape
 
 DET ::= the
 DET ::= The
