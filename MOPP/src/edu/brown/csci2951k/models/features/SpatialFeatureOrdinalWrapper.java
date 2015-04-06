@@ -40,16 +40,24 @@ public class SpatialFeatureOrdinalWrapper<T extends SpatialCoords> extends Spati
         List<MObject> ordinal = objs.subList(1, objs.size());
 
         Iterator<List<MObject>> psItr = new FilteredIterator<>(new PowerSetIterator<>(objs, objs.size()), (List<MObject> l) -> {
-            if(!l.get(0).equals(main))
+            if (!l.get(0).equals(main)) {
                 return false;
-            
-            Boolean anySimilarObjects = l.subList(1, l.size()).stream().map(main::equals).reduce(Boolean.FALSE, (b0, b1) -> b0 || b1);
-            return !anySimilarObjects;
+            }
+
+            for (int i = 0; i < l.size(); ++i) {
+                for (int j = i + 1; j < l.size(); ++j) {
+                    if (l.get(i).equals(l.get(j))) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         });
         List<List<MObject>> poss = new ArrayList<>();
         psItr.forEachRemaining(poss::add);
 
-        Iterator<Pair<List<MObject>,Double>> collect = poss.stream()
+        Iterator<Pair<List<MObject>, Double>> collect = poss.stream()
                 .map((o) -> new Pair<>(o, wrapped.apply(model, o)))
                 .sorted((p1, p2) -> p1.getValue().compareTo(p2.getValue())).iterator();
 
