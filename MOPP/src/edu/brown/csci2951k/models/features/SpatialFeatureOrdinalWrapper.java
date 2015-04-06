@@ -2,15 +2,14 @@ package edu.brown.csci2951k.models.features;
 
 import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.data.MObjectSet;
-import edu.brown.csci2951k.models.features.SpatialFeature;
-import edu.brown.csci2951k.models.space.Coords2D;
 import edu.brown.csci2951k.models.space.SpatialCoords;
 import edu.brown.csci2951k.models.space.SpatialModel;
 import edu.brown.csci2951k.util.Pair;
-import java.util.Arrays;
+import edu.brown.csci2951k.util.iterator.FilteredIterator;
+import edu.brown.csci2951k.util.iterator.PowerSetIterator;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,31 +20,37 @@ import java.util.stream.Collectors;
  *
  * @author Gaurav Manek
  */
-public class SpatialFeature2OrdinalWrapper<T extends SpatialCoords> extends SpatialFeature<T> {
+public class SpatialFeatureOrdinalWrapper<T extends SpatialCoords> extends SpatialFeature<T> {
 
     private final SpatialFeature<T> wrapped;
 
-    public SpatialFeature2OrdinalWrapper(SpatialFeature<T> wrapped) {
-        if (!wrapped.bindsTo(2)) {
-            throw new RuntimeException();
-        }
-
+    public SpatialFeatureOrdinalWrapper(SpatialFeature<T> wrapped) {
         this.wrapped = wrapped;
     }
 
     @Override
     public boolean bindsTo(int numChildren) {
-        return numChildren == 2;
+        return wrapped.bindsTo(numChildren);
     }
 
     @Override
     protected Double checkedApply(SpatialModel<T> model, List<MObject> objs) {
         MObjectSet objects = model.getObjects();
         MObject main = objs.get(0);
-        MObject ordinal = objs.get(1);
+        List<MObject> ordinal = objs.subList(1, objs.size());
 
-        Iterator<Pair<MObject, Double>> collect = objects.stream()
-                .map((o) -> new Pair<>(o, wrapped.apply(model, Arrays.asList(main, o))))
+        Iterator<List<MObject>> psItr = new FilteredIterator<>(new PowerSetIterator<>(objs, objs.size()), (List<MObject> l) -> {
+            if(!l.get(0).equals(main))
+                return false;
+            
+            Boolean anySimilarObjects = l.subList(1, l.size()).stream().map(main::equals).reduce(Boolean.FALSE, (b0, b1) -> b0 || b1);
+            return !anySimilarObjects;
+        });
+        List<List<MObject>> poss = new ArrayList<>();
+        psItr.forEachRemaining(poss::add);
+
+        Iterator<Pair<List<MObject>,Double>> collect = poss.stream()
+                .map((o) -> new Pair<>(o, wrapped.apply(model, o)))
                 .sorted((p1, p2) -> p1.getValue().compareTo(p2.getValue())).iterator();
 
         int i = 1;
@@ -58,5 +63,4 @@ public class SpatialFeature2OrdinalWrapper<T extends SpatialCoords> extends Spat
 
         return i * 1.0;
     }
-
 }
