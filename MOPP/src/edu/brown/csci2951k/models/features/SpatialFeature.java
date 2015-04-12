@@ -26,5 +26,7 @@ public abstract class SpatialFeature<T extends SpatialCoords> {
     }
 
     protected abstract Double checkedApply(SpatialModel<T> model, List<MObject> objs);
+    
+    public abstract String getName();
 
 }

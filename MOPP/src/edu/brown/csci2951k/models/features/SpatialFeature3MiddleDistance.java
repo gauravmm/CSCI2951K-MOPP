@@ -32,4 +32,9 @@ public class SpatialFeature3MiddleDistance extends SpatialFeature<Coords2D> {
         return p.getDistanceTo(midpt);
     }
 
+    @Override
+    public String getName() {
+        return "midpt_distance";
+    }
+
 }

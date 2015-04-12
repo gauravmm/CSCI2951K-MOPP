@@ -11,7 +11,7 @@ import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.distribution.MultinomialDistribution;
 import edu.brown.csci2951k.models.features.SpatialFeature;
 import edu.brown.csci2951k.models.features.SpatialFeature2Norm;
-import edu.brown.csci2951k.models.features.SpatialFeature2OrdinalWrapper;
+import edu.brown.csci2951k.models.features.SpatialFeatureOrdinalWrapper;
 import edu.brown.csci2951k.models.features.SpatialFeatureDX;
 import edu.brown.csci2951k.models.features.SpatialFeatureDY;
 import edu.brown.csci2951k.models.features.WeightedFeature;
@@ -60,6 +60,12 @@ public class MOPP {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        try {
+            CorpusTraining.main(args);
+        } catch (IOException ex) {
+            Logger.getLogger(MOPP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.exit(0);
 
         if (args.length != 2) {
             System.out.println("Usage: java -cp MOPP.jar FILE_TRAIN FILE_TEST");
@@ -97,14 +103,14 @@ public class MOPP {
         }
 
         Function<Meanings.PP, SpatialFeature<Coords2D>> mapping = new LearnedMapping();
-        
+
         // Train:
         for (Corpus c : corpusTrain) {
-            //processCorpus(c, eP, mapping, correct, total);
+            processCorpus(c, eP, mapping, correct, total);
         }
         // Test:
         for (Corpus c : corpusTest) {
-            processCorpus(c, eP, mapping, correct, total);
+            //processCorpus(c, eP, mapping, correct, total);
         }
 
         try {
@@ -112,7 +118,7 @@ public class MOPP {
         } catch (InterruptedException ex) {
             Logger.getLogger(MOPP.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         for (Meanings.PP pp : Meanings.PP.values()) {
             System.out.format("%s\t%d\t%d\t%.3f\n", pp, total.get(pp), correct.get(pp), correct.get(pp) / 1.0 / total.get(pp));
         }
@@ -128,7 +134,7 @@ public class MOPP {
         Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();
 
         SpatialCoordsNormalizer<Coords2D, Coords2D> normalizer = new Coords2DNormalizer();
-        
+
         while (itr.hasNext()) {
             Pair<String, MObject> cp = itr.next();
 
@@ -149,7 +155,7 @@ public class MOPP {
             System.err.println(dist);
             System.err.format("%d\t%s\n", numGreater, convert.toString());
             System.err.println();
-            
+
             total.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + 1);
         }
     }
@@ -181,15 +187,15 @@ public class MOPP {
     private static class LearnedMapping implements Function<Meanings.PP, SpatialFeature<Coords2D>> {
 
         private HashMap<Meanings.PP, SpatialFeature<Coords2D>> map = new HashMap<>();
-        
+
         public LearnedMapping() {
             super();
-            
-            map.put(Meanings.PP.RIGHT, getWV(new double[]{.774e-4, .197e-4, .023e-4, .249e-4, -.265e-4, .213e-4}));
-            map.put(Meanings.PP.LEFT, getWV(new double[] {-.149e-3, -.0034e-3, .0092e-3, .0219e-3, .0181e-3, .0146e-3}));
-            map.put(Meanings.PP.NEAR, getWV(new double[] {.0529e-3, .0827e-3, -.1047e-3, .0552e-3, .0645e-3, .0601e-3}));
-            map.put(Meanings.PP.FRONT, getWV(new double[] {.553e-4, .827e-4, -.616e-4, .808e-4, .602e-4, -.519e-4}));
-            map.put(Meanings.PP.BETWEEN, new SpatialFeature<Coords2D>(){
+
+            map.put(Meanings.PP.NEAR, getWV(new double[]{-.0404e-3, .0275e-3, -.1175e-3, .0263e-3, .0246e-3, .0255e-3}));
+            map.put(Meanings.PP.LEFT, getWV(new double[]{-.0331e-3, .0165e-3, -.0021e-3, .0271e-3, .0266e-3, .0261e-3}));
+            map.put(Meanings.PP.RIGHT, getWV(new double[]{.0449e-3, .0265e-3, .0174e-3, .0290e-3, .0375e-3, .0369e-3}));
+            map.put(Meanings.PP.FRONT, getWV(new double[]{.0305e-3, .0284e-3, .0270e-3, .0284e-3, .0351e-3, .0437e-3}));
+            map.put(Meanings.PP.BETWEEN, new SpatialFeature<Coords2D>() {
 
                 @Override
                 public boolean bindsTo(int numChildren) {
@@ -200,25 +206,28 @@ public class MOPP {
                 protected Double checkedApply(SpatialModel<Coords2D> model, List<MObject> objs) {
                     return 1.0;
                 }
-                
+
+                @Override
+                public String getName() {
+                    return "arbitrary_between";
+                }
+
             });
         }
-        
-        private SpatialFeature<Coords2D> getWV(double[] c){
-                return new WeightedFeature(Arrays.asList(
-                        new Pair<>(  new SpatialFeatureDX(), c[0]),
-                        new Pair<>(  new SpatialFeatureDY(), c[1]),
-                        new Pair<>(  new SpatialFeature2Norm(), c[2]),
-                        new Pair<>(w(new SpatialFeatureDX()), c[3]),
-                        new Pair<>(w(new SpatialFeatureDY()), c[4]),
-                        new Pair<>(w(new SpatialFeature2Norm()), c[5])));
-                        
+
+        private SpatialFeature<Coords2D> getWV(double[] c) {
+            return new WeightedFeature(Arrays.asList(
+                    new Pair<>(new SpatialFeatureDX(), c[0]),
+                    new Pair<>(new SpatialFeatureDY(), c[1]),
+                    new Pair<>(new SpatialFeature2Norm(), c[2]),
+                    new Pair<>(w(new SpatialFeatureDX()), c[3]),
+                    new Pair<>(w(new SpatialFeatureDY()), c[4]),
+                    new Pair<>(w(new SpatialFeature2Norm()), c[5])));
         }
-        
-        private SpatialFeature<Coords2D> w (SpatialFeature<Coords2D> i){
-            return new SpatialFeature2OrdinalWrapper<>(i);
+
+        private SpatialFeature<Coords2D> w(SpatialFeature<Coords2D> i) {
+            return new SpatialFeatureOrdinalWrapper<>(i);
         }
-            
 
         public SpatialFeature<Coords2D> apply(Meanings.PP pp) {
             return map.get(pp);

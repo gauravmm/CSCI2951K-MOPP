@@ -71,4 +71,9 @@ public class SpatialFeatureOrdinalWrapper<T extends SpatialCoords> extends Spati
 
         return i * 1.0;
     }
+
+    @Override
+    public String getName() {
+        return "ordinal_" + wrapped.getName();
+    }
 }

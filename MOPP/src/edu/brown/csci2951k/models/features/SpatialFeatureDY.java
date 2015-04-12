@@ -30,4 +30,9 @@ public class SpatialFeatureDY extends SpatialFeature<Coords2D> {
         return model.get(o1).getY() - model.get(o2).getY();
     }
 
+    @Override
+    public String getName() {
+        return "delta_y";
+    }
+
 }

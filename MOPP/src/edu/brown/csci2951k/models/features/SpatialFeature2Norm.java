@@ -30,4 +30,9 @@ public class SpatialFeature2Norm extends SpatialFeature<Coords2D> {
         return model.get(o1).getDistanceTo(model.get(o2));
     }
 
+    @Override
+    public String getName() {
+        return "cartesian";
+    }
+
 }

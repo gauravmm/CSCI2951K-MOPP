@@ -42,4 +42,9 @@ public class SpatialFeature3ProjectionBetweenPoints extends SpatialFeature<Coord
         return (e1.getX()*e2.getX() + e1.getY()*e2.getY());
     }
 
+    @Override
+    public String getName() {
+        return "projection_between_points";
+    }
+
 }

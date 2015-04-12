@@ -31,4 +31,9 @@ public class SpatialFeature3PerpendicularDistance extends SpatialFeature<Coords2
         return ((p0.getY() - p1.getY()) * p.getX() + (p1.getX() - p0.getX()) * p.getY() + (p0.getX() * p1.getY() - p1.getX() * p0.getY())) / p1.getDistanceTo(p0);
     }
 
+    @Override
+    public String getName() {
+        return "perpendicular_distance";
+    }
+
 }

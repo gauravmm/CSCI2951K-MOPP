@@ -34,5 +34,10 @@ public class WeightedFeature<T extends SpatialCoords> extends SpatialFeature<T> 
         // Perform the mapping to all features, and multiply by the value.
         return featureWeights.stream().mapToDouble((p) -> p.getKey().apply(model, objs) * p.getValue()).sum();
     }
+
+    @Override
+    public String getName() {
+        return "weighted_feature";
+    }
     
 }

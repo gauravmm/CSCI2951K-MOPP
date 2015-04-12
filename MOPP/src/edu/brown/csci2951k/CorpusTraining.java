@@ -7,42 +7,29 @@ package edu.brown.csci2951k;
 
 import edu.brown.csci2951k.corpus.Corpus;
 import edu.brown.csci2951k.corpus.XMLCorpusAdapter;
-import edu.brown.csci2951k.models.data.MObject;
-import edu.brown.csci2951k.models.data.XMLPrimitiveMObjectReference;
+import edu.brown.csci2951k.learning.genetic.GeneticTrainer;
 import edu.brown.csci2951k.models.language.ObjectLanguageModel;
 import edu.brown.csci2951k.models.language.ObjectLanguageModelUnigram;
 import edu.brown.csci2951k.models.language.XMLAdapterObjectLanguageModelUnigram;
-import edu.brown.csci2951k.models.meaning.MeaningConverter;
-import edu.brown.csci2951k.models.meaning.MeaningNode;
 import edu.brown.csci2951k.models.space.Coords2D;
 import edu.brown.csci2951k.models.space.SpatialCoords;
 import edu.brown.csci2951k.models.space.XMLAdapterCoords2D;
-import edu.brown.csci2951k.util.Pair;
-import edu.brown.csci2951k.util.support.TokenizedSentence;
 import edu.brown.csci2951k.util.xml.XMLObject;
 import edu.brown.csci2951k.util.xml.XMLParser;
-import edu.brown.csci2951k.util.xml.XMLPrimitive;
-import edu.brown.csci2951k.util.xml.adapters.XMLPrimitivePair;
-import edu.brown.csci2951k.util.xml.adapters.XMLPrimitiveString;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import ontopt.pen.EarleyParser;
 import ontopt.pen.GrammarException;
-import ontopt.pen.SemanticNode;
-import ontopt.pen.Sentence;
 
 /**
  *
  * @author Gaurav Manek, Zachary Loery
  */
-public class CorpusLearningPrep {
+public class CorpusTraining {
 
     /**
      * @param args the command line arguments
@@ -83,44 +70,8 @@ public class CorpusLearningPrep {
 
     }
 
-    private static <T extends SpatialCoords> void runCorpus(List<Corpus<T>> co, EarleyParser eP, String n) throws IOException {
-        List<String> output = co.stream().map((c) -> processCorpus(c, eP)).collect(Collectors.toList());
-        Files.write(Paths.get(n.concat(".xml")), output, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
-    }
-
-    private static String processCorpus(Corpus c, EarleyParser eP) {
-        XMLObject rv = new XMLObject("corpus");
-        rv.add("objects", c.getObj());
-        rv.add("model", c.getSM());
-        // new XMLCollection("corpus", xmlPrimitivePairAdapter, this.corpus)
-        // rv.add();
-        Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();
-        XMLPrimitiveMObjectReference mref = new XMLPrimitiveMObjectReference(c.getObj());
-        XMLPrimitivePair adapter = new XMLPrimitivePair(XMLPrimitiveString.getInstance(), new XMLPrimitiveMObjectReference(c.getObj()));
-
-        XMLObject xmlC = new XMLObject("corpus");
-        while (itr.hasNext()) {
-            Pair<String, MObject> cp = itr.next();
-
-            XMLObject xmlCE = new XMLObject("element");
-            xmlCE.setAttr("key", cp.getKey());
-            xmlCE.setAttr("value", mref.toXMLContents(cp.getValue()));
-
-            Sentence sen = new TokenizedSentence(cp.getKey());
-            ArrayList<SemanticNode> parses = eP.parseSentence(sen);
-            MeaningNode convert = MeaningConverter.convert(parses.get(0));
-            xmlCE.add(new XMLPrimitive("debug", XMLPrimitiveString.getInstance(), convert.toString()));
-
-            xmlCE.add(convert.toXML("meaning", c.getObj()));
-
-            xmlC.add(xmlCE);
-        }
-
-        rv.add(xmlC);
-
-        return rv.toString();
-        // System.err.println(MeaningConverter.convert(parses.get(0)));
-
+    private static void runCorpus(List<Corpus<Coords2D>> co, EarleyParser eP, String n) throws IOException {
+        GeneticTrainer.train(co, eP, n);
     }
 
     private static <R extends SpatialCoords, O extends ObjectLanguageModel> List<Corpus<R>> loadCorpus(XMLCorpusAdapter<R, O> adapter, List<String> file) {
