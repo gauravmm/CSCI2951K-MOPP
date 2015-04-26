@@ -1,4 +1,5 @@
 RAIZ ::= NP
+RAIZ ::= NP <&> DANG
 
 NP ::= SNP <&> PP
 -10 # SNP ::= DET <&> N
@@ -23,6 +24,9 @@ DIRECTION ::= right
 DIRECTION ::= front
 DIRECTION ::= in <&> front
 
+DANG ::= S_DANG
+DANG ::= S_DANG <&> DANG
+
 N ::= bowl
 N ::= spoon
 N ::= toy
@@ -45,3 +49,36 @@ JJ ::= pink
 JJ ::= yellow
 JJ ::= orange
 JJ ::= other
+
+S_DANG ::= on
+S_DANG ::= of
+S_DANG ::= near
+S_DANG ::= between
+S_DANG ::= left
+S_DANG ::= right
+S_DANG ::= front
+S_DANG ::= in
+
+
+S_DANG ::= bowl
+S_DANG ::= spoon
+S_DANG ::= toy
+S_DANG ::= hamster
+S_DANG ::= sphere
+S_DANG ::= duck
+S_DANG ::= thing
+S_DANG ::= object
+S_DANG ::= sphere
+S_DANG ::= box
+S_DANG ::= tape
+
+S_DANG ::= the
+S_DANG ::= The
+S_DANG ::= a
+
+S_DANG ::= red
+S_DANG ::= blue
+S_DANG ::= pink
+S_DANG ::= yellow
+S_DANG ::= orange
+S_DANG ::= other
