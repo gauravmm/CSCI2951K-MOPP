@@ -1,31 +1,51 @@
 RAIZ ::= NP
-RAIZ ::= NP <&> DANG
-
 NP ::= SNP <&> PP
--10 # SNP ::= DET <&> N
--10 # SNP ::= DET <&> JJ <&> N
--10 # SNP ::= JJ <&> N
+-11 $ NP ::= SNP
+
+SNP ::= DET <&> N
+-11 # SNP ::= DET
+
+SNP ::= DET <&> JJ <&> N
+-11 # SNP ::= DET <&> JJ
+-12 # SNP ::= DET
+
+
+SNP ::= JJ <&> N
+-11 # SNP ::= JJ
+
 SNP ::= N
 NP ::= SNP
 
--10 # PP ::= PREP_UNARY <&> NP
--10 # PP ::= PREP_BINARY <&> NP <&> CC <&> NP
+PP ::= PREP_UNARY <&> NP
+-11 # PP ::= PREP_UNARY
+
+PP ::= PREP_BINARY <&> NP <&> CC <&> NP
+-11 # PP ::= PREP_BINARY <&> NP <&> CC
+-12 # PP ::= PREP_BINARY <&> NP
+-13 # PP ::= PREP_BINARY
+
 PREP_UNARY ::= on <&> the <&> DIRECTION <&> of
+-13 # PREP_UNARY ::= on
+-12 # PREP_UNARY ::= on <&> the
+-11 # PREP_UNARY ::= on <&> the <&> DIRECTION
+
 PREP_UNARY ::= to <&> the <&> DIRECTION <&> of
+-13 # PREP_UNARY ::= to
+-12 # PREP_UNARY ::= to <&> the
+-11 # PREP_UNARY ::= to <&> the <&> DIRECTION
 
 CC ::= and
 
 PREP_BINARY ::= between
 PREP_UNARY ::= near
 PREP_UNARY ::= DIRECTION <&> of
+-11 # PREP_UNARY ::= DIRECTION
 
 DIRECTION ::= left
 DIRECTION ::= right
 DIRECTION ::= front
 DIRECTION ::= in <&> front
-
-DANG ::= S_DANG
-DANG ::= S_DANG <&> DANG
+-11 # DIRECTION ::= in
 
 N ::= bowl
 N ::= spoon
@@ -49,36 +69,3 @@ JJ ::= pink
 JJ ::= yellow
 JJ ::= orange
 JJ ::= other
-
-S_DANG ::= on
-S_DANG ::= of
-S_DANG ::= near
-S_DANG ::= between
-S_DANG ::= left
-S_DANG ::= right
-S_DANG ::= front
-S_DANG ::= in
-
-
-S_DANG ::= bowl
-S_DANG ::= spoon
-S_DANG ::= toy
-S_DANG ::= hamster
-S_DANG ::= sphere
-S_DANG ::= duck
-S_DANG ::= thing
-S_DANG ::= object
-S_DANG ::= sphere
-S_DANG ::= box
-S_DANG ::= tape
-
-S_DANG ::= the
-S_DANG ::= The
-S_DANG ::= a
-
-S_DANG ::= red
-S_DANG ::= blue
-S_DANG ::= pink
-S_DANG ::= yellow
-S_DANG ::= orange
-S_DANG ::= other
