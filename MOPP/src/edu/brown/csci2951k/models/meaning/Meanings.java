@@ -28,6 +28,10 @@ public final class Meanings {
         public boolean isBinary() {
             return this.bindingNum == 2;
         }
+        
+        public int getNumChildren() {
+            return this.bindingNum + 1;
+        }
     }
 
 }

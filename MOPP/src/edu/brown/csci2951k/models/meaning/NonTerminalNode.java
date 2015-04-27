@@ -5,6 +5,7 @@
  */
 package edu.brown.csci2951k.models.meaning;
 
+import edu.brown.csci2951k.learning.genetic.TrainingExamples;
 import edu.brown.csci2951k.util.iterator.PowerSetIterator;
 import edu.brown.csci2951k.util.iterator.FilteredIterator;
 import edu.brown.csci2951k.models.data.MObject;
@@ -22,6 +23,7 @@ import java.util.Collection;
 import java.util.DoubleSummaryStatistics;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -113,6 +115,16 @@ public class NonTerminalNode implements MeaningNode {
     @Override
     public MultinomialDistribution getPrior(MObjectSet objectSet) {
         return children.get(0).getPrior(objectSet);
+    }
+
+    @Override
+    public List<MultinomialDistribution> getPriors(MObjectSet objectSet) {
+        return children.stream().map((o) -> o.getPrior(objectSet)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Meanings.PP> getPP() {
+        return Optional.of(type);
     }
 
 }

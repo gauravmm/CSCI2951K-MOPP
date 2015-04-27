@@ -11,7 +11,9 @@ import edu.brown.csci2951k.models.features.SpatialFeature;
 import edu.brown.csci2951k.models.space.SpatialCoords;
 import edu.brown.csci2951k.models.space.SpatialModel;
 import edu.brown.csci2951k.util.xml.XMLElement;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -45,5 +47,15 @@ public final class TerminalNode implements MeaningNode {
     @Override
     public MultinomialDistribution getPrior(MObjectSet objectSet) {
         return MultinomialDistribution.getLanguageDistribution(objectSet, simpleNP);
+    }
+
+    @Override
+    public List<MultinomialDistribution> getPriors(MObjectSet objectSet) {
+        return Collections.singletonList(this.getPrior(objectSet));
+    }
+
+    @Override
+    public Optional<Meanings.PP> getPP() {
+        return Optional.empty();
     }
 }

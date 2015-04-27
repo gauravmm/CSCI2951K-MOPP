@@ -32,6 +32,7 @@ public class CorpusVisualizer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        args = new String[] {"data\\corpora source\\corpus_11.xml"};
         if (args.length == 0) {
             System.out.println("Usage: java -cp MOPP.jar edu.brown.csci2951k.CorpusVisualizer FILE_1 [FILE_2 [...]] ");
             System.exit(1);
@@ -43,7 +44,7 @@ public class CorpusVisualizer {
             try {
                 String collect = Files.readAllLines(Paths.get(a)).stream().collect(Collectors.joining("\n"));
                 XMLObject parseXML = XMLParser.parseXML(collect);
-                Corpus<Coords2D> fromXML = xmlCorpusAdapter.fromXML(parseXML.get("corpus"));
+                Corpus<Coords2D> fromXML = xmlCorpusAdapter.fromXML(parseXML.get(0));
                 
                 (new Frm2DViz(fromXML.getSM())).setTitle(a);
             } catch(XMLSerializingException e){

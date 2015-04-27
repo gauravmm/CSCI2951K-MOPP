@@ -7,7 +7,6 @@ package edu.brown.csci2951k.models.features;
 
 import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.space.Coords2D;
-import edu.brown.csci2951k.models.space.SpatialCoords;
 import edu.brown.csci2951k.models.space.SpatialModel;
 import java.util.List;
 
@@ -15,24 +14,26 @@ import java.util.List;
  *
  * @author Gaurav Manek
  */
-public class SpatialFeature2Norm extends SpatialFeature<Coords2D> {
+public class SpatialFeature3PerpendicularDistanceFrac extends SpatialFeature<Coords2D> {
 
     @Override
     public boolean bindsTo(int numChildren) {
-        return numChildren == 2;
+        return numChildren == 3;
     }
 
     @Override
     protected Double checkedApply(SpatialModel<Coords2D> model, List<MObject> objs) {
-        MObject o1 = objs.get(0);
-        MObject o2 = objs.get(1);
+        // http://geomalgorithms.com/a02-_lines.html
+        Coords2D p = model.get(objs.get(0));
+        Coords2D p0 = model.get(objs.get(1));
+        Coords2D p1 = model.get(objs.get(2));
 
-        return model.get(o1).getDistanceTo(model.get(o2));
+        return ((p0.getY() - p1.getY()) * p.getX() + (p1.getX() - p0.getX()) * p.getY() + (p0.getX() * p1.getY() - p1.getX() * p0.getY())) / Math.pow(p1.getDistanceTo(p0), 2.0);
     }
 
     @Override
     public String getName() {
-        return "cartesian";
+        return "perpendicular_distance_frac";
     }
 
 }
