@@ -130,6 +130,26 @@ public class MOPP {
         return IntStream.range(0, parseXML.size()).mapToObj((i) -> adapter.fromXML(parseXML.get(i))).collect(Collectors.toList());
     }
 
+    private static ArrayList<SemanticNode> filterParses(ArrayList<SemanticNode> parses){
+        ArrayList<SemanticNode> output = new ArrayList<>();
+        for(SemanticNode parse : parses){
+            boolean isValid = true;
+            SemanticNode curNode = parse;
+            while(!curNode.isLeaf()){
+                for(int i = 0; i < curNode.getChildCount(); i++){
+                    if(i < curNode.getChildCount()-1 && curNode.getChildren().get(i).getWeight() > 0){//If a child other than the last one in the list has non-zero weight
+                        isValid = false;
+                    }
+                }
+                curNode = curNode.getChildren().get(curNode.getChildCount()-1);
+            }
+            if(isValid){
+                output.add(parse);
+            }
+        }
+        return output;
+    }
+    
     private static void processCorpus(Corpus c, EarleyParser eP, Function<Meanings.PP, SpatialFeature<Coords2D>> mapping, HashMap<Meanings.PP, Integer> correct, HashMap<Meanings.PP, Integer> total) {
         Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();
 
@@ -140,6 +160,7 @@ public class MOPP {
 
             Sentence sen = new TokenizedSentence(cp.getKey());
             ArrayList<SemanticNode> parses = eP.parseSentence(sen);
+            parses = filterParses(parses);
             MeaningNode convert = MeaningConverter.convert(parses.get(0));
 
             MultinomialDistribution dist = convert.apply(normalizer.normalize(c.getSM()), c.getObj(), mapping);
