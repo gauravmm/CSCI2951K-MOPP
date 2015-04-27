@@ -88,7 +88,7 @@ public class CorpusLearningPrep {
         Files.write(Paths.get(n.concat(".xml")), output, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
     }
 
-    private static String processCorpus(Corpus c, EarleyParser eP) {
+    private static <T extends SpatialCoords> String processCorpus(Corpus<T> c, EarleyParser eP) {
         XMLObject rv = new XMLObject("corpus");
         rv.add("objects", c.getObj());
         rv.add("model", c.getSM());
@@ -96,7 +96,7 @@ public class CorpusLearningPrep {
         // rv.add();
         Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();
         XMLPrimitiveMObjectReference mref = new XMLPrimitiveMObjectReference(c.getObj());
-        XMLPrimitivePair adapter = new XMLPrimitivePair(XMLPrimitiveString.getInstance(), new XMLPrimitiveMObjectReference(c.getObj()));
+        XMLPrimitivePair<String, MObject> adapter = new XMLPrimitivePair<>(XMLPrimitiveString.getInstance(), new XMLPrimitiveMObjectReference(c.getObj()));
 
         XMLObject xmlC = new XMLObject("corpus");
         while (itr.hasNext()) {

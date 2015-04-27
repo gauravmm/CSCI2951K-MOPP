@@ -53,9 +53,14 @@ public class NonTerminalNode implements MeaningNode {
         List<MultinomialDistribution> dists = children.stream().map((c) -> c.apply(model, objectSet, featureMapping)).collect(Collectors.toList());
 
         Iterator<List<MObject>> psItr = new FilteredIterator<>(new PowerSetIterator<>(objectSet, children.size()), (List<MObject> l) -> {
-            MObject t = l.get(0);
-            Boolean anySimilarObjects = l.subList(1, l.size()).stream().map(t::equals).reduce(Boolean.FALSE, (b0, b1) -> b0 || b1);
-            return !anySimilarObjects;
+            for(int i = 0; i < l.size() - 1; ++i) {
+                MObject t = l.get(i);
+                Boolean anySimilarObjects = l.subList(i + 1, l.size()).stream().map(t::equals).reduce(Boolean.FALSE, (b0, b1) -> b0 || b1);
+                if(anySimilarObjects)
+                    return false;
+            }
+            
+            return true;
         });
         ConcurrentHashMap<MObject, Double> conditional = new ConcurrentHashMap<>();
         objectSet.forEach((o) -> conditional.put(o, 0.0));

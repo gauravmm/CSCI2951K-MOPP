@@ -11,6 +11,10 @@ import edu.brown.csci2951k.models.data.MObject;
 import edu.brown.csci2951k.models.distribution.MultinomialDistribution;
 import edu.brown.csci2951k.models.features.SpatialFeature;
 import edu.brown.csci2951k.models.features.SpatialFeature2Norm;
+import edu.brown.csci2951k.models.features.SpatialFeature3MiddleDistance;
+import edu.brown.csci2951k.models.features.SpatialFeature3PerpendicularDistance;
+import edu.brown.csci2951k.models.features.SpatialFeature3PerpendicularDistanceFrac;
+import edu.brown.csci2951k.models.features.SpatialFeature3ProjectionBetweenPoints;
 import edu.brown.csci2951k.models.features.SpatialFeatureOrdinalWrapper;
 import edu.brown.csci2951k.models.features.SpatialFeatureDX;
 import edu.brown.csci2951k.models.features.SpatialFeatureDY;
@@ -60,9 +64,10 @@ public class MOPP {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
         try {
-            CorpusTraining.main(args);
-        } catch (IOException ex) {
+            CorpusParsing.main(args);
+        } catch (Exception ex) {
             Logger.getLogger(MOPP.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.exit(0);
@@ -94,23 +99,27 @@ public class MOPP {
             return;
         }
 
-        HashMap<Meanings.PP, Integer> correct = new HashMap<>();
-        HashMap<Meanings.PP, Integer> total = new HashMap<>();
+        HashMap<Meanings.PP, Double> correct = new HashMap<>();
+        HashMap<Meanings.PP, Double> total = new HashMap<>();
 
         for (Meanings.PP pp : Meanings.PP.values()) {
-            correct.put(pp, 0);
-            total.put(pp, 0);
+            correct.put(pp, 0.0);
+            total.put(pp, 0.0);
         }
 
-        Function<Meanings.PP, SpatialFeature<Coords2D>> mapping = new LearnedMapping();
+        //Function<Meanings.PP, SpatialFeature<Coords2D>> mapping = new LearnedMapping();
+        Function<Meanings.PP, SpatialFeature<Coords2D>> mapping = new HandTunedMapping();
 
         // Train:
         for (Corpus c : corpusTrain) {
-            processCorpus(c, eP, mapping, correct, total);
+            //processCorpus(c, eP, mapping, correct, total);
         }
         // Test:
         for (Corpus c : corpusTest) {
+            //processCorpusPrior(c, eP, correct, total);
+            //processCorpusRandom(c, eP, correct, total);
             //processCorpus(c, eP, mapping, correct, total);
+            processCorpusUnigram(c, eP, correct, total);
         }
 
         try {
@@ -120,7 +129,7 @@ public class MOPP {
         }
 
         for (Meanings.PP pp : Meanings.PP.values()) {
-            System.out.format("%s\t%d\t%d\t%.3f\n", pp, total.get(pp), correct.get(pp), correct.get(pp) / 1.0 / total.get(pp));
+            System.out.format("%s\t%.7f\t%.7f\t%.3f\n", pp, total.get(pp), correct.get(pp), correct.get(pp) / 1.0 / total.get(pp));
         }
 
     }
@@ -130,7 +139,7 @@ public class MOPP {
         return IntStream.range(0, parseXML.size()).mapToObj((i) -> adapter.fromXML(parseXML.get(i))).collect(Collectors.toList());
     }
 
-    private static void processCorpus(Corpus c, EarleyParser eP, Function<Meanings.PP, SpatialFeature<Coords2D>> mapping, HashMap<Meanings.PP, Integer> correct, HashMap<Meanings.PP, Integer> total) {
+    private static void processCorpus(Corpus c, EarleyParser eP, Function<Meanings.PP, SpatialFeature<Coords2D>> mapping, HashMap<Meanings.PP, Double> correct, HashMap<Meanings.PP, Double> total) {
         Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();
 
         SpatialCoordsNormalizer<Coords2D, Coords2D> normalizer = new Coords2DNormalizer();
@@ -160,7 +169,23 @@ public class MOPP {
         }
     }
 
-    private static void processCorpusPrior(Corpus c, EarleyParser eP, HashMap<Meanings.PP, Integer> correct, HashMap<Meanings.PP, Integer> total) {
+    private static void processCorpusRandom(Corpus c, EarleyParser eP, HashMap<Meanings.PP, Double> correct, HashMap<Meanings.PP, Double> total) {
+        Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();
+
+        while (itr.hasNext()) {
+            Pair<String, MObject> cp = itr.next();
+
+            Sentence sen = new TokenizedSentence(cp.getKey());
+            ArrayList<SemanticNode> parses = eP.parseSentence(sen);
+            MeaningNode convert = MeaningConverter.convert(parses.get(0));
+
+            // System.err.format("%d\t%s\n", numGreater, convert.toString());
+            correct.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + 1.00 / c.getObj().size());
+            total.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + 1);
+        }
+    }
+
+    private static void processCorpusPrior(Corpus c, EarleyParser eP, HashMap<Meanings.PP, Double> correct, HashMap<Meanings.PP, Double> total) {
         Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();
 
         while (itr.hasNext()) {
@@ -176,10 +201,36 @@ public class MOPP {
             Double correctProb = prior.get(cp.getValue());
             int numGreater = prior.get().stream().mapToInt((p) -> (p.getValue() >= correctProb) ? 1 : 0).sum();
             if (numGreater == 1) {
-                correct.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + 1);
+                // correct.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + correctProb);
             }
 
             // System.err.format("%d\t%s\n", numGreater, convert.toString());
+            correct.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + correctProb);
+            total.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + 1);
+        }
+    }
+
+    private static void processCorpusUnigram(Corpus c, EarleyParser eP, HashMap<Meanings.PP, Double> correct, HashMap<Meanings.PP, Double> total) {
+        Iterator<Pair<String, MObject>> itr = c.getCorpus().iterator();
+
+        while (itr.hasNext()) {
+            Pair<String, MObject> cp = itr.next();
+
+            Sentence sen = new TokenizedSentence(cp.getKey());
+            ArrayList<SemanticNode> parses = eP.parseSentence(sen);
+            MeaningNode convert = MeaningConverter.convert(parses.get(0));
+
+            // For Prior:
+            MultinomialDistribution unigram = MultinomialDistribution.getLanguageDistribution(c.getObj(), Arrays.asList(cp.getKey().toLowerCase().split("[\\W]")));
+
+            Double correctProb = unigram.get(cp.getValue());
+            int numGreater = unigram.get().stream().mapToInt((p) -> (p.getValue() >= correctProb) ? 1 : 0).sum();
+            if (numGreater == 1) {
+                // correct.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + correctProb);
+            }
+
+            // System.err.format("%d\t%s\n", numGreater, convert.toString());
+            correct.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + correctProb);
             total.compute(((NonTerminalNode) convert).getType(), (k, v) -> v + 1);
         }
     }
@@ -191,28 +242,60 @@ public class MOPP {
         public LearnedMapping() {
             super();
 
-            map.put(Meanings.PP.NEAR, getWV(new double[]{-.0404e-3, .0275e-3, -.1175e-3, .0263e-3, .0246e-3, .0255e-3}));
-            map.put(Meanings.PP.LEFT, getWV(new double[]{-.0331e-3, .0165e-3, -.0021e-3, .0271e-3, .0266e-3, .0261e-3}));
-            map.put(Meanings.PP.RIGHT, getWV(new double[]{.0449e-3, .0265e-3, .0174e-3, .0290e-3, .0375e-3, .0369e-3}));
-            map.put(Meanings.PP.FRONT, getWV(new double[]{.0305e-3, .0284e-3, .0270e-3, .0284e-3, .0351e-3, .0437e-3}));
-            map.put(Meanings.PP.BETWEEN, new SpatialFeature<Coords2D>() {
+            map.put(Meanings.PP.NEAR, getWV(new double[]{-.0478e-3, -.0182e-3, -.1092e-3, .0412e-3, .1064e-3, .0847e-3}));
+            map.put(Meanings.PP.LEFT, getWV(new double[]{-.1325e-3, -.0285e-3, .0418e-3, .0155e-3, .0321e-3, .0241e-3}));
+            map.put(Meanings.PP.RIGHT, getWV(new double[]{.0229e-3, .0335e-3, -.0468e-3, .0306e-3, .0495e-3, .0427e-3}));
+            map.put(Meanings.PP.FRONT, getWV(new double[]{.0120e-3, .0305e-3, -.0363e-3, .0356e-3, .0291e-3, .0471e-3}));
+            map.put(Meanings.PP.BETWEEN, new WeightedFeature(Arrays.asList(
+                    new Pair<>(new SpatialFeature3PerpendicularDistance(), -0.0140e-3),
+                    new Pair<>(new SpatialFeature3ProjectionBetweenPoints(), -0.0060e-3),
+                    new Pair<>(new SpatialFeature3PerpendicularDistanceFrac(), -0.0284e-3),
+                    new Pair<>(new SpatialFeature3MiddleDistance(), 0.2220e-3),
+                    new Pair<>(w(new SpatialFeature3PerpendicularDistance()), 0.4630e-3),
+                    new Pair<>(w(new SpatialFeature3ProjectionBetweenPoints()), 0.0484e-3),
+                    new Pair<>(w(new SpatialFeature3PerpendicularDistanceFrac()), 0.0393e-3),
+                    new Pair<>(w(new SpatialFeature3MiddleDistance()), 0.0305e-3))));
+        }
 
-                @Override
-                public boolean bindsTo(int numChildren) {
-                    return numChildren == 3;
-                }
+        private SpatialFeature<Coords2D> getWV(double[] c) {
+            return new WeightedFeature(Arrays.asList(
+                    new Pair<>(new SpatialFeatureDX(), c[0]),
+                    new Pair<>(new SpatialFeatureDY(), c[1]),
+                    new Pair<>(new SpatialFeature2Norm(), c[2]),
+                    new Pair<>(w(new SpatialFeatureDX()), c[3]),
+                    new Pair<>(w(new SpatialFeatureDY()), c[4]),
+                    new Pair<>(w(new SpatialFeature2Norm()), c[5])));
+        }
 
-                @Override
-                protected Double checkedApply(SpatialModel<Coords2D> model, List<MObject> objs) {
-                    return 1.0;
-                }
+        private SpatialFeature<Coords2D> w(SpatialFeature<Coords2D> i) {
+            return new SpatialFeatureOrdinalWrapper<>(i);
+        }
 
-                @Override
-                public String getName() {
-                    return "arbitrary_between";
-                }
+        public SpatialFeature<Coords2D> apply(Meanings.PP pp) {
+            return map.get(pp);
+        }
+    }
 
-            });
+    private static class HandTunedMapping implements Function<Meanings.PP, SpatialFeature<Coords2D>> {
+
+        private HashMap<Meanings.PP, SpatialFeature<Coords2D>> map = new HashMap<>();
+
+        public HandTunedMapping() {
+            super();
+
+            map.put(Meanings.PP.NEAR, getWV(new double[]{-1, 0, 0, 0, 0, 0}));
+            map.put(Meanings.PP.LEFT, getWV(new double[]{-3, 0, -1, 0, 0, 0}));
+            map.put(Meanings.PP.RIGHT, getWV(new double[]{1, 0, -1, 0, 0, 0}));
+            map.put(Meanings.PP.FRONT, getWV(new double[]{0, 1, -1, 0, 0, 0}));
+            map.put(Meanings.PP.BETWEEN, new WeightedFeature(Arrays.asList(
+                    new Pair<>(new SpatialFeature3PerpendicularDistance(), 0.0),
+                    new Pair<>(new SpatialFeature3ProjectionBetweenPoints(), 1.0),
+                    new Pair<>(new SpatialFeature3PerpendicularDistanceFrac(), -1.0),
+                    new Pair<>(new SpatialFeature3MiddleDistance(), 0.0))));
+            //        new Pair<>(w(new SpatialFeature3PerpendicularDistance()), 0.0),
+            //        new Pair<>(w(new SpatialFeature3ProjectionBetweenPoints()), 0.0),
+            //        new Pair<>(w(new SpatialFeature3PerpendicularDistanceFrac()), 0.0),
+            //        new Pair<>(w(new SpatialFeature3MiddleDistance()), 0.0))));
         }
 
         private SpatialFeature<Coords2D> getWV(double[] c) {

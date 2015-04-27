@@ -27,7 +27,8 @@ public final class SpatialFeatures {
                     new SpatialFeatureDY(),
                     new SpatialFeature3PerpendicularDistance(),
                     new SpatialFeature3PerpendicularDistanceFrac(),
-                    new SpatialFeature3ProjectionBetweenPoints());
+                    new SpatialFeature3ProjectionBetweenPoints(),
+                    new SpatialFeature3MiddleDistance());
             ArrayList<SpatialFeature<Coords2D>> rv = new ArrayList<>();
             rv.addAll(rawl);
             rawl.stream().map((f) -> new SpatialFeatureOrdinalWrapper<>(f)).forEachOrdered(rv::add);
